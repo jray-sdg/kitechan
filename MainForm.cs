@@ -1,4 +1,5 @@
-﻿using Kitechan.Types;
+﻿using Kitechan.Controls;
+using Kitechan.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace Kitechan
     public partial class MainForm : Form
     {
         private Engine engine;
+
+        private LoginDialog loginDialog;
 
         private Queue<CommentControl> controlPool;
 
@@ -36,6 +39,8 @@ namespace Kitechan
             this.engine.CommentDeletedEvent += engine_CommentDeletedEvent;
             this.engine.CommentHeartedEvent += engine_CommentHeartedEvent;
             this.engine.StreamHeartedEvent += engine_StreamHeartedEvent;
+
+            this.loginDialog = new LoginDialog(this.engine.ValidateCredentials);
 
             this.controlPool = new Queue<CommentControl>(105);
             for (int x = 0; x < 105; x++)
@@ -242,7 +247,11 @@ namespace Kitechan
 
         private void loginLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            
+            DialogResult loginResult = this.loginDialog.ShowDialog();
+            this.loginDialog.Clear();
+            if (loginResult == DialogResult.OK)
+            {
+            }
         }
     }
 }

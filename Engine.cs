@@ -11,6 +11,8 @@ namespace Kitechan
 {
     public delegate UserInfo UserInfoDelegate(int userId);
 
+    public delegate bool ValidateCredentialsDelegate(string userName, IEnumerable<char> password);
+
     class Engine
     {
         public event EventHandler<NewMessageEventArgs> NewMessageEvent;
@@ -80,15 +82,21 @@ namespace Kitechan
             {
                 XmlDocument stateFile = new XmlDocument();
                 stateFile.Load(StateFile);
-                if (stateFile["kitechan"] != null && stateFile["kitechan"]["userInfo"] != null)
+                if (stateFile["kitechan"] != null)
                 {
-                    foreach (XmlNode childNode in stateFile["kitechan"]["userInfo"].ChildNodes)
+                    foreach (XmlNode childNode in stateFile["kitechan"].ChildNodes)
                     {
-                        if (childNode.Name == "user")
+                        if (childNode.Name == "userInfo")
                         {
-                            UserInfo user = UserInfo.FromXml(childNode);
-                            user.ImageLoadedEvent += userInfo_ImageLoadedEvent;
-                            this.userInfo.Add(user.Id, user);
+                            foreach (XmlNode userNode in childNode.ChildNodes)
+                            {
+                                if (userNode.Name == "user")
+                                {
+                                    UserInfo user = UserInfo.FromXml(userNode);
+                                    user.ImageLoadedEvent += userInfo_ImageLoadedEvent;
+                                    this.userInfo.Add(user.Id, user);
+                                }
+                            }
                         }
                     }
                 }
@@ -132,6 +140,11 @@ namespace Kitechan
                 info.ImageLoadedEvent += userInfo_ImageLoadedEvent;
                 this.userInfo.Add(userId, info);
             }
+        }
+
+        public bool ValidateCredentials(string userName, IEnumerable<char> password)
+        {
+            return true;
         }
 
         public void PostComment(string message)
