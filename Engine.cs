@@ -29,6 +29,14 @@ namespace Kitechan
 
         public event EventHandler<StreamHeartedEventArgs> StreamHeartedEvent;
 
+        public bool LoggedIn { get; private set; }
+
+        public int LoggedInUserId { get; private set; }
+
+        private string MixlrUserLogin { get; set; }
+
+        private string MixlrSession { get; set; }
+
         private WebSocket WebSocket { get; set; }
 
         private string WebSocketUrl { get { return "ws://ws.pusherapp.com/app/2c4e9e540854144b54a9?protocol=5&client=js&version=1.12.7&flash=false"; } }
@@ -58,6 +66,10 @@ namespace Kitechan
                 Directory.CreateDirectory(ImageCacheDir);
             }
             this.userInfo = new Dictionary<int, UserInfo>();
+            this.LoggedIn = false;
+            this.LoggedInUserId = 0;
+            this.MixlrUserLogin = string.Empty;
+            this.MixlrSession = string.Empty;
             this.LoadState();
             this.WebSocket = new WebSocket(this.WebSocketUrl);
             this.WebSocket.Opened += webSocket_Opened;
@@ -86,7 +98,20 @@ namespace Kitechan
                 {
                     foreach (XmlNode childNode in stateFile["kitechan"].ChildNodes)
                     {
-                        if (childNode.Name == "userInfo")
+                        if (childNode.Name == "loggedInUser")
+                        {
+                            this.LoggedIn = true;
+                            this.LoggedInUserId = int.Parse(childNode.InnerText);
+                        }
+                        else if(childNode.Name == "mixlrUserLogin")
+                        {
+                            this.MixlrUserLogin = childNode.InnerText;
+                        }
+                        else if (childNode.Name == "mixlrSession")
+                        {
+                            this.MixlrSession = childNode.InnerText;
+                        }
+                        else if (childNode.Name == "userInfo")
                         {
                             foreach (XmlNode userNode in childNode.ChildNodes)
                             {
@@ -109,6 +134,13 @@ namespace Kitechan
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("kitechan");
+
+                if (this.LoggedIn)
+                {
+                    writer.WriteElementString("loggedInUser", this.LoggedInUserId.ToString());
+                    writer.WriteElementString("mixlrUserLogin", this.MixlrUserLogin);
+                    writer.WriteElementString("mixlrSession", this.MixlrSession);
+                }
 
                 writer.WriteStartElement("userInfo");
 
@@ -144,17 +176,36 @@ namespace Kitechan
 
         public bool ValidateCredentials(string userName, IEnumerable<char> password)
         {
-            return true;
+            LogonResult result = WebWorker.Logon(userName, password);
+            if (result != null)
+            {
+                bool success = false;
+                if (bool.TryParse(result.Success, out success) || success)
+                {
+                    this.LoggedIn = true;
+                    this.LoggedInUserId = int.Parse(result.UserId);
+                    this.MixlrUserLogin = result.MixlrUserLogin;
+                    this.MixlrSession = result.MixlrSession;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void PostComment(string message)
         {
-            //WebWorker.PostComment(message, "", "");  // Straight busted
+            if (this.LoggedIn)
+            {
+                WebWorker.PostComment(message, this.MixlrUserLogin, this.MixlrSession);
+            }
         }
 
         public void HeartComment(int commentId)
         {
-            //WebWorker.HeartComment(commentId, "", "");  // Straight busted
+            if (this.LoggedIn)
+            {
+                WebWorker.HeartComment(commentId, this.MixlrUserLogin, this.MixlrSession);
+            }
         }
 
         private void userInfo_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)

@@ -94,6 +94,7 @@
     <Compile Include="Controls\SmoothPictureBox.Designer.cs">
       <DependentUpon>SmoothPictureBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Types\LogonResult.cs" />
     <Compile Include="Types\SocketEvent.cs" />
     <Compile Include="Types\WebWorker.cs" />
     <Compile Include="UserInfo.cs" />
