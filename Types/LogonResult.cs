@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kitechan.Types
 {
-    class LogonResult
+    public class LogonResult
     {
         [JsonProperty(PropertyName = "success")]
         public string Success { get; set; }

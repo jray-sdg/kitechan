@@ -26,29 +26,26 @@ namespace Kitechan.Types
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(PostCommentUrl);
             request.Method = "POST";
-            request.UserAgent = "";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Accept = "text/plain";
-            request.Headers.Add("X-Requested_With", "XMLHttpRequest");
+            request.UserAgent = "Kitechan";
+            request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";//"application/x-www-form-urlencoded";
+            request.Accept = "application/json, text/javascript, */*; q=0.01";//"text/plain";
+            request.Headers.Add("X-Requested-With", "XMLHttpRequest");
             CookieContainer cookies = new CookieContainer();
-            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin));
-            cookies.Add(new Cookie("mixlr_session", mixlrSession));
+            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
+            cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
             request.CookieContainer = cookies;
-            string body = "comment%5Bcontent%5D=" + message + "&comment%5Bbroadcaster_id%5D=" + 27902;
-            request.BeginGetRequestStream(ContinuePostData, new PostData() { Request = request, Message = message });
-        }
-
-        private static void ContinuePostData(IAsyncResult result)
-        {
-            PostData postData = (PostData)result.AsyncState;
-            Stream requestStream = postData.Request.EndGetRequestStream(result);
-            byte[] bodyBytes = Encoding.UTF8.GetBytes(postData.Message);
-            requestStream.Write(bodyBytes, 0, bodyBytes.Length);
-            requestStream.Close();
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message.Replace(' ', '+'));
+            List<byte> body = new List<byte>();
+            body.AddRange(Encoding.UTF8.GetBytes("comment%5Bcontent%5D="));
+            body.AddRange(messageBytes);
+            body.AddRange(Encoding.UTF8.GetBytes("&comment%5Bbroadcaster_id%5D=27902"));
             WebResponse response = null;
             try
             {
-                response = postData.Request.GetResponse();
+                Stream bodyStream = request.GetRequestStream();
+                bodyStream.Write(body.ToArray(), 0, body.Count);
+                bodyStream.Close();
+                response = (HttpWebResponse)request.GetResponse();
             }
             catch
             {
@@ -66,13 +63,13 @@ namespace Kitechan.Types
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(string.Format(CommentHeartUrl, commentId));
             request.Method = "POST";
-            request.UserAgent = "";
+            request.UserAgent = "Kitechan";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Accept = "text/plain";
             request.Headers.Add("X-Requested_With", "XMLHttpRequest");
             CookieContainer cookies = new CookieContainer();
-            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin));
-            cookies.Add(new Cookie("mixlr_session", mixlrSession));
+            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
+            cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
             request.CookieContainer = cookies;
             WebResponse response = null;
             try
@@ -97,7 +94,7 @@ namespace Kitechan.Types
             CookieContainer requestContainer = new CookieContainer();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(LogonUrl);
             request.Method = "POST";
-            request.UserAgent = "";
+            request.UserAgent = "Kitechan";
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
             request.Accept = "application/json";
             request.Headers.Add("X-Requested_With", "XMLHttpRequest");

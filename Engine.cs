@@ -246,6 +246,11 @@ namespace Kitechan
                     {
                         this.LoadUserInfo(comment.UserId);
                     }
+                    UserInfo postingUser = this.GetUserInfo(comment.UserId);
+                    if (postingUser.Name != comment.Name)
+                    {
+                        this.userInfo[comment.UserId].Name = comment.Name;
+                    }
                     this.NewMessageEvent(this, new NewMessageEventArgs(comment));
                     break;
                 case "comment:hearted":

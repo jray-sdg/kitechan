@@ -30,7 +30,7 @@ namespace Kitechan.Controls
             this.AllowOkButton();
         }
 
-        private void passwordTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void passwordTextBox_TextChanged(object sender, EventArgs e)
         {
             this.AllowOkButton();
         }
