@@ -47,11 +47,16 @@ namespace Kitechan
             {
                 CommentControl commentControl = new CommentControl(this.engine.GetUserInfo);
                 commentControl.HeartCommentEvent += commentControl_HeartCommentEvent;
+                commentControl.UnheartCommentEvent += commentControl_UnheartCommentEvent;
                 this.controlPool.Enqueue(commentControl);
             }
             this.streamNameLabel.Text = "Jeff Gerstmann's Mixlr";
             this.streamHeartsLabel.Text = "♥ 0";
-            this.engine.GetUserInfo(this.engine.JeffUserId).LoadImage();
+            this.engine.GetUserInfo(Engine.JeffUserId).LoadImage();
+            if (this.engine.LoggedIn)
+            {
+                this.engine.GetUserInfo(this.engine.LoggedInUserId).LoadImage();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -108,6 +113,11 @@ namespace Kitechan
             this.engine.HeartComment(e.CommentId);
         }
 
+        private void commentControl_UnheartCommentEvent(object sender, UnheartCommentEventArgs e)
+        {
+            this.engine.UnheartComment(e.CommentId);
+        }
+
         private void PrintLine(string message)
         {
             if (this.bodyPanel.InvokeRequired)
@@ -145,9 +155,14 @@ namespace Kitechan
             else
             {
                 Image image = this.engine.GetUserInfo(userId).UserImage;
-                if (userId == this.engine.JeffUserId)
+                if (userId == Engine.JeffUserId)
                 {
                     this.jeffPictureBox.Image = image;
+                }
+                if (this.engine.LoggedIn && userId == this.engine.LoggedInUserId)
+                {
+                    this.loggedInPictureBox.BorderStyle = BorderStyle.None;
+                    this.loggedInPictureBox.Image = image;
                 }
                 if (this.userLookup.ContainsKey(userId))
                 {
@@ -236,12 +251,14 @@ namespace Kitechan
                 if (e.Control)
                 {
                     this.commentTextBox.Text += Environment.NewLine;
+                    this.commentTextBox.SelectionStart += Environment.NewLine.Length;
                 }
                 else
                 {
                     this.postButton.PerformClick();
                 }
                 e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 

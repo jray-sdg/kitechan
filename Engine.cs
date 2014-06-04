@@ -43,7 +43,7 @@ namespace Kitechan
 
         private string UserInfoUrl { get { return "http://api.mixlr.com/users/"; } }
 
-        public int JeffUserId { get { return 27902; } }
+        public static int JeffUserId { get { return 27902; } }
 
         private string SubscribeEvent { get { return @"{""event"":""pusher:subscribe"",""data"":{""channel"":""production;user;27902""}}"; } }
 
@@ -205,6 +205,14 @@ namespace Kitechan
             if (this.LoggedIn)
             {
                 WebWorker.HeartComment(commentId, this.MixlrUserLogin, this.MixlrSession);
+            }
+        }
+
+        public void UnheartComment(int commentId)
+        {
+            if (this.LoggedIn)
+            {
+                WebWorker.UnheartComment(commentId, this.MixlrUserLogin, this.MixlrSession);
             }
         }
 

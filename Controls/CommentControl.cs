@@ -13,7 +13,11 @@ namespace Kitechan
     {
         public event EventHandler<HeartCommentEventArgs> HeartCommentEvent;
 
+        public event EventHandler<UnheartCommentEventArgs> UnheartCommentEvent;
+
         private UserInfoDelegate getUserInfo;
+
+        private bool LockHearts;
 
         public int CommentId { get; private set; }
 
@@ -23,6 +27,7 @@ namespace Kitechan
         {
             InitializeComponent();
             this.getUserInfo = userInfo;
+            this.LockHearts = false;
         }
 
         public void SetComment(Comment comment)
@@ -35,6 +40,7 @@ namespace Kitechan
             this.userIcon.Image = null;
             this.statusLabel.Text = "0 hearts";
             this.statusLabel.ForeColor = Color.Black;
+            this.LockHearts = comment.Id == -1;
             this.toolTip.SetToolTip(this.statusLabel, string.Empty);
             if (this.getUserInfo != null)
             {
@@ -63,6 +69,7 @@ namespace Kitechan
             this.userIcon.Image = null;
             this.statusLabel.Text = string.Empty;
             this.statusLabel.ForeColor = Color.Black;
+            this.LockHearts = true;
             this.toolTip.SetToolTip(this.statusLabel, string.Empty);
         }
 
@@ -104,11 +111,18 @@ namespace Kitechan
             this.statusLabel.ForeColor = Color.DarkRed;
         }
 
-        private void statusLabel_Click(object sender, EventArgs e)
+        private void statusLabel_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.HeartCommentEvent != null && this.CommentId != -1)
+            if (!this.LockHearts)
             {
-                this.HeartCommentEvent(this, new HeartCommentEventArgs(this.CommentId));
+                if (e.Button == MouseButtons.Left && this.HeartCommentEvent != null)
+                {
+                    this.HeartCommentEvent(this, new HeartCommentEventArgs(this.CommentId));
+                }
+                else if (e.Button == MouseButtons.Right && this.UnheartCommentEvent != null)
+                {
+                    this.UnheartCommentEvent(this, new UnheartCommentEventArgs(this.CommentId));
+                }
             }
         }
     }

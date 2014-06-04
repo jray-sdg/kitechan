@@ -94,7 +94,7 @@
             this.statusLabel.TabIndex = 4;
             this.statusLabel.Text = "[STATUS]";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.statusLabel.Click += new System.EventHandler(this.statusLabel_Click);
+            this.statusLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.statusLabel_MouseClick);
             // 
             // toolTip
             // 

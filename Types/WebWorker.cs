@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Kitechan.Types
@@ -16,19 +17,18 @@ namespace Kitechan.Types
 
         private static string LogonUrl { get { return "http://mixlr.com/user_session?no_mobile=true"; } }
 
-        private struct PostData
+        public static void PostComment(string message, string mixlrUserLogin, string mixlrSession)
         {
-            public HttpWebRequest Request { get; set; }
-            public string Message { get; set; }
+            Task.Factory.StartNew(() => PerformPostComment(message, mixlrUserLogin, mixlrSession));
         }
 
-        public static void PostComment(string message, string mixlrUserLogin, string mixlrSession) // jeffid magic
+        private static void PerformPostComment(string message, string mixlrUserLogin, string mixlrSession)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(PostCommentUrl);
             request.Method = "POST";
             request.UserAgent = "Kitechan";
-            request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";//"application/x-www-form-urlencoded";
-            request.Accept = "application/json, text/javascript, */*; q=0.01";//"text/plain";
+            request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.Headers.Add("X-Requested-With", "XMLHttpRequest");
             CookieContainer cookies = new CookieContainer();
             cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
@@ -38,7 +38,7 @@ namespace Kitechan.Types
             List<byte> body = new List<byte>();
             body.AddRange(Encoding.UTF8.GetBytes("comment%5Bcontent%5D="));
             body.AddRange(messageBytes);
-            body.AddRange(Encoding.UTF8.GetBytes("&comment%5Bbroadcaster_id%5D=27902"));
+            body.AddRange(Encoding.UTF8.GetBytes(string.Format("&comment%5Bbroadcaster_id%5D={0}", Engine.JeffUserId)));
             WebResponse response = null;
             try
             {
@@ -61,8 +61,47 @@ namespace Kitechan.Types
 
         public static void HeartComment(int commentId, string mixlrUserLogin, string mixlrSession)
         {
+            Task.Factory.StartNew(() => PerformHeartComment(commentId, mixlrUserLogin, mixlrSession));
+        }
+
+        private static void PerformHeartComment(int commentId, string mixlrUserLogin, string mixlrSession)
+        {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(string.Format(CommentHeartUrl, commentId));
             request.Method = "POST";
+            request.UserAgent = "Kitechan";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Accept = "text/plain";
+            request.Headers.Add("X-Requested_With", "XMLHttpRequest");
+            CookieContainer cookies = new CookieContainer();
+            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
+            cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
+            request.CookieContainer = cookies;
+            WebResponse response = null;
+            try
+            {
+                response = request.GetResponse();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+        }
+
+        public static void UnheartComment(int commentId, string mixlrUserLogin, string mixlrSession)
+        {
+            Task.Factory.StartNew(() => PerformUnheartComment(commentId, mixlrUserLogin, mixlrSession));
+        }
+
+        private static void PerformUnheartComment(int commentId, string mixlrUserLogin, string mixlrSession)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(string.Format(CommentHeartUrl, commentId));
+            request.Method = "DELETE";
             request.UserAgent = "Kitechan";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Accept = "text/plain";

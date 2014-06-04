@@ -96,4 +96,14 @@ namespace Kitechan
             this.CommentId = c;
         }
     }
+
+    public class UnheartCommentEventArgs : EventArgs
+    {
+        public int CommentId { get; private set; }
+
+        public UnheartCommentEventArgs(int c)
+        {
+            this.CommentId = c;
+        }
+    }
 }
