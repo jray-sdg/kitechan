@@ -60,9 +60,10 @@
             // 
             this.loginLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loginLabel.AutoSize = true;
+            this.loginLabel.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginLabel.Location = new System.Drawing.Point(533, 5);
             this.loginLabel.Name = "loginLabel";
-            this.loginLabel.Size = new System.Drawing.Size(33, 13);
+            this.loginLabel.Size = new System.Drawing.Size(32, 13);
             this.loginLabel.TabIndex = 4;
             this.loginLabel.TabStop = true;
             this.loginLabel.Text = "Login";
@@ -71,20 +72,20 @@
             // streamHeartsLabel
             // 
             this.streamHeartsLabel.AutoSize = true;
-            this.streamHeartsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.streamHeartsLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.streamHeartsLabel.Location = new System.Drawing.Point(59, 34);
             this.streamHeartsLabel.Name = "streamHeartsLabel";
-            this.streamHeartsLabel.Size = new System.Drawing.Size(114, 15);
+            this.streamHeartsLabel.Size = new System.Drawing.Size(100, 15);
             this.streamHeartsLabel.TabIndex = 3;
             this.streamHeartsLabel.Text = "[STREAM HEARTS]";
             // 
             // streamNameLabel
             // 
             this.streamNameLabel.AutoSize = true;
-            this.streamNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.streamNameLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.streamNameLabel.Location = new System.Drawing.Point(59, 3);
             this.streamNameLabel.Name = "streamNameLabel";
-            this.streamNameLabel.Size = new System.Drawing.Size(101, 15);
+            this.streamNameLabel.Size = new System.Drawing.Size(92, 15);
             this.streamNameLabel.TabIndex = 0;
             this.streamNameLabel.Text = "[STREAM NAME]";
             // 
@@ -92,6 +93,7 @@
             // 
             this.commentTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.commentTextBox.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.commentTextBox.Location = new System.Drawing.Point(15, 369);
             this.commentTextBox.Multiline = true;
             this.commentTextBox.Name = "commentTextBox";
@@ -102,6 +104,7 @@
             // postButton
             // 
             this.postButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.postButton.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.postButton.Location = new System.Drawing.Point(552, 369);
             this.postButton.Name = "postButton";
             this.postButton.Size = new System.Drawing.Size(75, 49);

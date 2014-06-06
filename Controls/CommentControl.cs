@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Kitechan.Types;
 
 namespace Kitechan
 {
@@ -26,6 +27,7 @@ namespace Kitechan
         public CommentControl(UserInfoDelegate userInfo)
         {
             InitializeComponent();
+
             this.getUserInfo = userInfo;
             this.LockHearts = false;
         }
