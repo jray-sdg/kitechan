@@ -29,9 +29,12 @@ namespace Kitechan
     {
         public string BroadcastTitle { get; private set; }
 
-        public BroadcastStartEventArgs(string t)
+        public string BroadcastId { get; private set; }
+
+        public BroadcastStartEventArgs(string t, string i)
         {
             this.BroadcastTitle = t;
+            this.BroadcastId = i;
         }
     }
 

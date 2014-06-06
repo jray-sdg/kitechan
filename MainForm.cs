@@ -55,7 +55,15 @@ namespace Kitechan
             this.engine.GetUserInfo(Engine.JeffUserId).LoadImage();
             if (this.engine.LoggedIn)
             {
-                this.engine.GetUserInfo(this.engine.LoggedInUserId).LoadImage();
+                UserInfo loggedInUser = this.engine.GetUserInfo(this.engine.LoggedInUserId);
+                loggedInUser.LoadImage();
+                this.loginLabel.Text = "Logged in as";
+                this.loggedInLabel.Text = loggedInUser.Name;
+            }
+            else
+            {
+                this.loginLabel.Text = "Login";
+                this.loggedInLabel.Text = string.Empty;
             }
         }
 
@@ -116,6 +124,26 @@ namespace Kitechan
         private void commentControl_UnheartCommentEvent(object sender, UnheartCommentEventArgs e)
         {
             this.engine.UnheartComment(e.CommentId);
+        }
+
+        private void streamHeartsLabel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (this.engine.LoggedIn && !string.IsNullOrEmpty(this.engine.BroadcastId))
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    this.engine.HeartStream();
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    this.autoheartTimer.Start();
+                }
+            }
+        }
+
+        private void autoheartTimer_Tick(object sender, EventArgs e)
+        {
+            this.engine.HeartStream();
         }
 
         private void PrintLine(string message)
@@ -204,8 +232,6 @@ namespace Kitechan
             }
             else
             {
-                /*IEnumerable<string> userNames = heartingUsers.Select((u) => this.engine.GetUserInfo(u).Name);
-                this.PrintLine("Comment " + commentId + " hearted by " + string.Join(", ", userNames));*/
                 if (this.commentLookup.ContainsKey(commentId))
                 {
                     this.commentLookup[commentId].UpdateHearts(heartingUsers);
@@ -268,6 +294,8 @@ namespace Kitechan
             this.loginDialog.Clear();
             if (loginResult == DialogResult.OK)
             {
+                this.loginLabel.Text = "Logged in as";
+                this.loggedInLabel.Text = this.engine.GetUserInfo(this.engine.LoggedInUserId).Name;
             }
         }
     }

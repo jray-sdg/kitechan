@@ -29,6 +29,8 @@ namespace Kitechan
 
         public event EventHandler<StreamHeartedEventArgs> StreamHeartedEvent;
 
+        public string BroadcastId { get; private set; }
+
         public bool LoggedIn { get; private set; }
 
         public int LoggedInUserId { get; private set; }
@@ -66,6 +68,7 @@ namespace Kitechan
                 Directory.CreateDirectory(ImageCacheDir);
             }
             this.userInfo = new Dictionary<int, UserInfo>();
+            this.BroadcastId = string.Empty;
             this.LoggedIn = false;
             this.LoggedInUserId = 0;
             this.MixlrUserLogin = string.Empty;
@@ -216,6 +219,14 @@ namespace Kitechan
             }
         }
 
+        public void HeartStream()
+        {
+            if (this.LoggedIn && !string.IsNullOrEmpty(this.BroadcastId))
+            {
+                WebWorker.HeartStream(this.BroadcastId, this.MixlrUserLogin, this.MixlrSession);
+            }
+        }
+
         private void userInfo_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)
         {
             this.ImageLoadedEvent(this, e);
@@ -268,7 +279,8 @@ namespace Kitechan
                     }
                     break;
                 case "broadcast:start":
-                    this.BroadcastStartEvent(this, new BroadcastStartEventArgs(socketEvent.Data.Broadcast.Title));
+                    this.BroadcastId = socketEvent.Data.Broadcast.Id;
+                    this.BroadcastStartEvent(this, new BroadcastStartEventArgs(socketEvent.Data.Broadcast.Title, socketEvent.Data.Broadcast.Id));
                     break;
                 default:
                     this.SystemMessageEvent(this, new SystemMessageEventArgs("Ignoring event type '" + socketEvent.Event + "'"));

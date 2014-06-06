@@ -11,6 +11,9 @@ namespace Kitechan
     {
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
     }
 
     public class SocketData

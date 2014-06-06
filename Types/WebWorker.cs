@@ -15,6 +15,8 @@ namespace Kitechan.Types
 
         private static string CommentHeartUrl { get { return "http://mixlr.com/comments/{0}/heart"; } }
 
+        private static string StreamHeartUrl { get { return "http://mixlr.com/broadcast_actions"; } }
+
         private static string LogonUrl { get { return "http://mixlr.com/user_session?no_mobile=true"; } }
 
         public static void PostComment(string message, string mixlrUserLogin, string mixlrSession)
@@ -114,6 +116,47 @@ namespace Kitechan.Types
             try
             {
                 response = request.GetResponse();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+        }
+
+        public static void HeartStream(string broadcastId, string mixlrUserLogin, string mixlrSession)
+        {
+            Task.Factory.StartNew(() => PerformHeartStream(broadcastId, mixlrUserLogin, mixlrSession));
+        }
+
+        private static void PerformHeartStream(string broadcastId, string mixlrUserLogin, string mixlrSession)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(StreamHeartUrl);
+            request.Method = "POST";
+            request.UserAgent = "Kitechan";
+            request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            request.Accept = "application/json, text/javascript, */*; q=0.01";
+            request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            CookieContainer cookies = new CookieContainer();
+            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
+            cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
+            request.CookieContainer = cookies;
+            byte[] broadcastBytes = Encoding.UTF8.GetBytes(broadcastId);
+            List<byte> body = new List<byte>();
+            body.AddRange(Encoding.UTF8.GetBytes("type=heart&broadcast_uid="));
+            body.AddRange(broadcastBytes);
+            WebResponse response = null;
+            try
+            {
+                Stream bodyStream = request.GetRequestStream();
+                bodyStream.Write(body.ToArray(), 0, body.Count);
+                bodyStream.Close();
+                response = (HttpWebResponse)request.GetResponse();
             }
             catch
             {

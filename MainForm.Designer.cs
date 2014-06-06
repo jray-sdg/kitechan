@@ -28,15 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.headerPanel = new System.Windows.Forms.Panel();
+            this.loggedInPictureBox = new Kitechan.SmoothPictureBox();
             this.loginLabel = new System.Windows.Forms.LinkLabel();
             this.streamHeartsLabel = new System.Windows.Forms.Label();
+            this.jeffPictureBox = new Kitechan.SmoothPictureBox();
             this.streamNameLabel = new System.Windows.Forms.Label();
             this.commentTextBox = new System.Windows.Forms.TextBox();
             this.postButton = new System.Windows.Forms.Button();
-            this.loggedInPictureBox = new Kitechan.SmoothPictureBox();
-            this.jeffPictureBox = new Kitechan.SmoothPictureBox();
             this.bodyPanel = new Kitechan.ScrollablePanel();
+            this.loggedInLabel = new System.Windows.Forms.Label();
+            this.autoheartTimer = new System.Windows.Forms.Timer(this.components);
             this.headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loggedInPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.jeffPictureBox)).BeginInit();
@@ -46,6 +49,7 @@
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.headerPanel.Controls.Add(this.loggedInLabel);
             this.headerPanel.Controls.Add(this.loggedInPictureBox);
             this.headerPanel.Controls.Add(this.loginLabel);
             this.headerPanel.Controls.Add(this.streamHeartsLabel);
@@ -56,17 +60,28 @@
             this.headerPanel.Size = new System.Drawing.Size(615, 57);
             this.headerPanel.TabIndex = 1;
             // 
+            // loggedInPictureBox
+            // 
+            this.loggedInPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loggedInPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.loggedInPictureBox.Location = new System.Drawing.Point(572, 3);
+            this.loggedInPictureBox.Name = "loggedInPictureBox";
+            this.loggedInPictureBox.Size = new System.Drawing.Size(40, 40);
+            this.loggedInPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.loggedInPictureBox.TabIndex = 5;
+            this.loggedInPictureBox.TabStop = false;
+            // 
             // loginLabel
             // 
             this.loginLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loginLabel.AutoSize = true;
             this.loginLabel.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loginLabel.Location = new System.Drawing.Point(533, 5);
+            this.loginLabel.Location = new System.Drawing.Point(448, 5);
             this.loginLabel.Name = "loginLabel";
-            this.loginLabel.Size = new System.Drawing.Size(32, 13);
+            this.loginLabel.Size = new System.Drawing.Size(117, 13);
             this.loginLabel.TabIndex = 4;
             this.loginLabel.TabStop = true;
             this.loginLabel.Text = "Login";
+            this.loginLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.loginLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.loginLabel_LinkClicked);
             // 
             // streamHeartsLabel
@@ -78,6 +93,16 @@
             this.streamHeartsLabel.Size = new System.Drawing.Size(100, 15);
             this.streamHeartsLabel.TabIndex = 3;
             this.streamHeartsLabel.Text = "[STREAM HEARTS]";
+            this.streamHeartsLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.streamHeartsLabel_MouseClick);
+            // 
+            // jeffPictureBox
+            // 
+            this.jeffPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.jeffPictureBox.Name = "jeffPictureBox";
+            this.jeffPictureBox.Size = new System.Drawing.Size(50, 50);
+            this.jeffPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.jeffPictureBox.TabIndex = 1;
+            this.jeffPictureBox.TabStop = false;
             // 
             // streamNameLabel
             // 
@@ -113,26 +138,6 @@
             this.postButton.UseVisualStyleBackColor = true;
             this.postButton.Click += new System.EventHandler(this.postButton_Click);
             // 
-            // loggedInPictureBox
-            // 
-            this.loggedInPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loggedInPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.loggedInPictureBox.Location = new System.Drawing.Point(572, 3);
-            this.loggedInPictureBox.Name = "loggedInPictureBox";
-            this.loggedInPictureBox.Size = new System.Drawing.Size(40, 40);
-            this.loggedInPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.loggedInPictureBox.TabIndex = 5;
-            this.loggedInPictureBox.TabStop = false;
-            // 
-            // jeffPictureBox
-            // 
-            this.jeffPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.jeffPictureBox.Name = "jeffPictureBox";
-            this.jeffPictureBox.Size = new System.Drawing.Size(50, 50);
-            this.jeffPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.jeffPictureBox.TabIndex = 1;
-            this.jeffPictureBox.TabStop = false;
-            // 
             // bodyPanel
             // 
             this.bodyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -143,6 +148,22 @@
             this.bodyPanel.Name = "bodyPanel";
             this.bodyPanel.Size = new System.Drawing.Size(615, 288);
             this.bodyPanel.TabIndex = 0;
+            // 
+            // loggedInLabel
+            // 
+            this.loggedInLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loggedInLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loggedInLabel.Location = new System.Drawing.Point(451, 29);
+            this.loggedInLabel.Name = "loggedInLabel";
+            this.loggedInLabel.Size = new System.Drawing.Size(114, 14);
+            this.loggedInLabel.TabIndex = 6;
+            this.loggedInLabel.Text = "[USER NAME]";
+            this.loggedInLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // autoheartTimer
+            // 
+            this.autoheartTimer.Interval = 2500;
+            this.autoheartTimer.Tick += new System.EventHandler(this.autoheartTimer_Tick);
             // 
             // MainForm
             // 
@@ -177,6 +198,8 @@
         private System.Windows.Forms.Button postButton;
         private System.Windows.Forms.LinkLabel loginLabel;
         private SmoothPictureBox loggedInPictureBox;
+        private System.Windows.Forms.Label loggedInLabel;
+        private System.Windows.Forms.Timer autoheartTimer;
 
 
 
