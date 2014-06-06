@@ -218,12 +218,6 @@ namespace Kitechan
 
         private void userInfo_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)
         {
-            UserInfo info = this.GetUserInfo(e.UserId);
-            if (string.IsNullOrEmpty(info.CachedImagePath))
-            {
-                info.CachedImagePath = Path.Combine(ImageCacheDir, info.Id + "_" + DateTime.Now.ToString("yyMMddHHmmss"));
-                info.UserImage.Save(info.CachedImagePath);
-            }
             this.ImageLoadedEvent(this, e);
         }
 
@@ -254,11 +248,7 @@ namespace Kitechan
                     {
                         this.LoadUserInfo(comment.UserId);
                     }
-                    UserInfo postingUser = this.GetUserInfo(comment.UserId);
-                    if (postingUser.Name != comment.Name)
-                    {
-                        this.userInfo[comment.UserId].Name = comment.Name;
-                    }
+                    this.GetUserInfo(comment.UserId).UpdateUser(comment.Name, comment.ImageUrl);
                     this.NewMessageEvent(this, new NewMessageEventArgs(comment));
                     break;
                 case "comment:hearted":

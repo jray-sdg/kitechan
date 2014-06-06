@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Kitechan
 {
     public class UserInfo
     {
+        public struct ImagePath
+        {
+            public string ImageUrl { get; set; }
+            public string CachedImagePath { get; set; }
+        }
+
         public event EventHandler<ImageLoadedEventArgs> ImageLoadedEvent;
 
         public int Id { get; private set; }
@@ -18,12 +26,16 @@ namespace Kitechan
 
         public string CachedImagePath { get; set; }
 
-        public Image UserImage { get; private set; }
+        public List<string> Aliases { get; private set; }
 
-        private WebClient webClient;
+        public List<ImagePath> PriorImages { get; private set; }
+
+        public Image UserImage { get; private set; }
 
         private UserInfo()
         {
+            this.Aliases = new List<string>();
+            this.PriorImages = new List<ImagePath>();
         }
 
         public UserInfo(int id, string name, string imageUrl)
@@ -33,38 +45,32 @@ namespace Kitechan
             this.ImageUrl = imageUrl;
             this.CachedImagePath = null;
             this.UserImage = null;
+            this.Aliases = new List<string>();
+            this.PriorImages = new List<ImagePath>();
         }
 
-        private void webClient_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
+        public void UpdateUser(string name, string imageUrl)
         {
-            try
+            if (!this.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (!e.Cancelled && !(e.Error is Exception))
-                {
-                    Image image;
-                    using (e.Result)
-                    {
-                        image = Image.FromStream(e.Result);
-                    }
-                    this.UserImage = image;
-                    this.ImageLoadedEvent(this, new ImageLoadedEventArgs(this.Id, true));
-                }
+                this.Aliases.Add(this.Name);
+                this.Name = name;
             }
-            catch
+            if (!this.ImageUrl.Equals(imageUrl, StringComparison.InvariantCultureIgnoreCase))
             {
+                this.PriorImages.Add(new ImagePath() { ImageUrl = this.ImageUrl, CachedImagePath = this.CachedImagePath });
+                this.ImageUrl = imageUrl;
+                this.CachedImagePath = null;
                 this.UserImage = null;
-            }
-            finally
-            {
-                if (this.webClient != null)
-                {
-                    this.webClient.Dispose();
-                    this.webClient = null;
-                }
             }
         }
 
         public void LoadImage()
+        {
+            Task.Factory.StartNew(() => this.PerformLoadImage());
+        }
+
+        private void PerformLoadImage()
         {
             if (File.Exists(this.CachedImagePath))
             {
@@ -73,15 +79,22 @@ namespace Kitechan
             }
             else
             {
-                this.webClient = new WebClient();
-                this.webClient.OpenReadCompleted += webClient_OpenReadCompleted;
-
-                try
+                using (WebClient webClient = new WebClient())
                 {
-                    this.webClient.OpenReadAsync(new Uri(this.ImageUrl));
-                }
-                catch
-                {
+                    try
+                    {
+                        Stream imageStream = webClient.OpenRead(this.ImageUrl);
+                        Image image = Image.FromStream(imageStream);
+                        imageStream.Close();
+                        this.UserImage = image;
+                        this.CachedImagePath = Path.Combine(Engine.ImageCacheDir, this.Id + "_" + DateTime.Now.ToString("yyMMddHHmmss"));
+                        this.UserImage.Save(this.CachedImagePath);
+                        this.ImageLoadedEvent(this, new ImageLoadedEventArgs(this.Id, true));
+                    }
+                    catch
+                    {
+                        this.UserImage = null;
+                    }
                 }
             }
         }
@@ -105,6 +118,21 @@ namespace Kitechan
             writer.WriteElementString("imageUrl", this.ImageUrl);
             writer.WriteElementString("cachedImagePath", this.CachedImagePath);
 
+            foreach (string alias in this.Aliases)
+            {
+                writer.WriteElementString("alias", alias);
+            }
+
+            foreach (ImagePath image in this.PriorImages)
+            {
+                writer.WriteStartElement("priorImage");
+
+                writer.WriteAttributeString("url", image.ImageUrl);
+                writer.WriteAttributeString("cache", image.CachedImagePath);
+
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement(); // user
         }
 
@@ -113,21 +141,29 @@ namespace Kitechan
             UserInfo ret = new UserInfo();
             if (node.Name == "user")
             {
-                if (node["id"] != null)
+                foreach (XmlNode innerNode in node.ChildNodes)
                 {
-                    ret.Id = int.Parse(node["id"].InnerText);
-                }
-                if (node["name"] != null)
-                {
-                    ret.Name = node["name"].InnerText;
-                }
-                if (node["imageUrl"] != null)
-                {
-                    ret.ImageUrl = node["imageUrl"].InnerText;
-                }
-                if (node["cachedImagePath"] != null)
-                {
-                    ret.CachedImagePath = node["cachedImagePath"].InnerText;
+                    switch (innerNode.Name)
+                    {
+                        case "id":
+                            ret.Id = int.Parse(innerNode.InnerText);
+                            break;
+                        case "name":
+                            ret.Name = innerNode.InnerText;
+                            break;
+                        case "imageUrl":
+                            ret.ImageUrl = innerNode.InnerText;
+                            break;
+                        case "cachedImagePath":
+                            ret.CachedImagePath = innerNode.InnerText;
+                            break;
+                        case "alias":
+                            ret.Aliases.Add(innerNode.InnerText);
+                            break;
+                        case "priorImage":
+                            ret.PriorImages.Add(new ImagePath() { ImageUrl = innerNode.Attributes["url"].InnerText, CachedImagePath = innerNode.Attributes["cache"].InnerText });
+                            break;
+                    }
                 }
             }
             return ret;

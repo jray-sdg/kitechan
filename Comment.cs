@@ -17,6 +17,8 @@ namespace Kitechan
 
         public int UserId { get; private set; }
 
+        public string ImageUrl { get; private set; }
+
         private Comment()
         {
             this.PostedTime = DateTime.Now;
@@ -30,6 +32,7 @@ namespace Kitechan
             ret.Message = socketEvent.Data.Content;
             ret.PostedTime = socketEvent.Data.CreatedAt;
             ret.UserId = int.Parse(socketEvent.Data.UserId);
+            ret.ImageUrl = socketEvent.Data.ImageUrl;
             return ret;
         }
 
