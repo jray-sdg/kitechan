@@ -113,6 +113,7 @@
             this.Name = "CommentControl";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.Size = new System.Drawing.Size(380, 62);
+            this.Resize += new System.EventHandler(this.CommentControl_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.userIcon)).EndInit();
             this.ResumeLayout(false);
 

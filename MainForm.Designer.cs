@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.headerPanel = new System.Windows.Forms.Panel();
+            this.loggedInLabel = new System.Windows.Forms.Label();
             this.loggedInPictureBox = new Kitechan.SmoothPictureBox();
             this.loginLabel = new System.Windows.Forms.LinkLabel();
             this.streamHeartsLabel = new System.Windows.Forms.Label();
@@ -38,7 +39,6 @@
             this.commentTextBox = new System.Windows.Forms.TextBox();
             this.postButton = new System.Windows.Forms.Button();
             this.bodyPanel = new Kitechan.ScrollablePanel();
-            this.loggedInLabel = new System.Windows.Forms.Label();
             this.autoheartTimer = new System.Windows.Forms.Timer(this.components);
             this.headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loggedInPictureBox)).BeginInit();
@@ -59,6 +59,17 @@
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(615, 57);
             this.headerPanel.TabIndex = 1;
+            // 
+            // loggedInLabel
+            // 
+            this.loggedInLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loggedInLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loggedInLabel.Location = new System.Drawing.Point(451, 29);
+            this.loggedInLabel.Name = "loggedInLabel";
+            this.loggedInLabel.Size = new System.Drawing.Size(114, 14);
+            this.loggedInLabel.TabIndex = 6;
+            this.loggedInLabel.Text = "[USER NAME]";
+            this.loggedInLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // loggedInPictureBox
             // 
@@ -149,17 +160,6 @@
             this.bodyPanel.Size = new System.Drawing.Size(615, 288);
             this.bodyPanel.TabIndex = 0;
             // 
-            // loggedInLabel
-            // 
-            this.loggedInLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loggedInLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loggedInLabel.Location = new System.Drawing.Point(451, 29);
-            this.loggedInLabel.Name = "loggedInLabel";
-            this.loggedInLabel.Size = new System.Drawing.Size(114, 14);
-            this.loggedInLabel.TabIndex = 6;
-            this.loggedInLabel.Text = "[USER NAME]";
-            this.loggedInLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // autoheartTimer
             // 
             this.autoheartTimer.Interval = 2500;
@@ -174,6 +174,7 @@
             this.Controls.Add(this.commentTextBox);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.bodyPanel);
+            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "MainForm";
             this.Text = "Kitechan";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

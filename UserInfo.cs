@@ -99,16 +99,6 @@ namespace Kitechan
             }
         }
 
-        public static UserInfo FromUrl(string url)
-        {
-            using (WebClient client = new WebClient())
-            {
-                string userInfo = client.DownloadString(url);
-                UserJson json = UserJson.Parse(userInfo);
-                return new UserInfo(int.Parse(json.Id), json.UserName, json.ProfileImageUrl);
-            }
-        }
-
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("user");

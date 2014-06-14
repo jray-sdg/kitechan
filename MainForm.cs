@@ -286,6 +286,13 @@ namespace Kitechan
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+            else if (e.Control)
+            {
+                if (e.KeyCode == Keys.A)
+                {
+                    this.commentTextBox.SelectAll();
+                }
+            }
         }
 
         private void loginLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

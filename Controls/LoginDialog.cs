@@ -35,6 +35,22 @@ namespace Kitechan.Controls
             this.AllowOkButton();
         }
 
+        private void userTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && this.okButton.Enabled)
+            {
+                this.okButton.PerformClick();
+            }
+        }
+
+        private void passwordTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && this.okButton.Enabled)
+            {
+                this.okButton.PerformClick();
+            }
+        }
+
         private void AllowOkButton()
         {
             this.okButton.Enabled = this.userTextBox.Text.Length > 0 && this.passwordTextBox.Text.Length > 0;

@@ -43,8 +43,6 @@ namespace Kitechan
 
         private string WebSocketUrl { get { return "ws://ws.pusherapp.com/app/2c4e9e540854144b54a9?protocol=5&client=js&version=1.12.7&flash=false"; } }
 
-        private string UserInfoUrl { get { return "http://api.mixlr.com/users/"; } }
-
         public static int JeffUserId { get { return 27902; } }
 
         private string SubscribeEvent { get { return @"{""event"":""pusher:subscribe"",""data"":{""channel"":""production;user;27902""}}"; } }
@@ -171,7 +169,7 @@ namespace Kitechan
         {
             if (!this.userInfo.ContainsKey(userId))
             {
-                UserInfo info = UserInfo.FromUrl(this.UserInfoUrl + userId.ToString());
+                UserInfo info = WebWorker.GetUserInfo(userId);
                 info.ImageLoadedEvent += userInfo_ImageLoadedEvent;
                 this.userInfo.Add(userId, info);
             }

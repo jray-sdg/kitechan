@@ -19,6 +19,8 @@ namespace Kitechan.Types
 
         private static string LogonUrl { get { return "http://mixlr.com/user_session?no_mobile=true"; } }
 
+        private static string UserInfoUrl { get { return "http://api.mixlr.com/users/{0}"; } }
+
         public static void PostComment(string message, string mixlrUserLogin, string mixlrSession)
         {
             Task.Factory.StartNew(() => PerformPostComment(message, mixlrUserLogin, mixlrSession));
@@ -244,6 +246,16 @@ namespace Kitechan.Types
                 }
             }
             return ret;
+        }
+
+        public static UserInfo GetUserInfo(int userId)
+        {
+            using (WebClient client = new WebClient())
+            {
+                string userInfo = client.DownloadString(string.Format(UserInfoUrl, userId));
+                UserJson json = UserJson.Parse(userInfo);
+                return new UserInfo(int.Parse(json.Id), json.UserName, json.ProfileImageUrl);
+            }
         }
     }
 }

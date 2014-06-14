@@ -63,6 +63,7 @@
             this.userTextBox.Size = new System.Drawing.Size(262, 20);
             this.userTextBox.TabIndex = 3;
             this.userTextBox.TextChanged += new System.EventHandler(this.userTextBox_TextChanged);
+            this.userTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.userTextBox_KeyDown);
             // 
             // passwordTextBox
             // 
@@ -74,6 +75,7 @@
             this.passwordTextBox.TabIndex = 4;
             this.passwordTextBox.UseSystemPasswordChar = true;
             this.passwordTextBox.TextChanged += new System.EventHandler(this.passwordTextBox_TextChanged);
+            this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextBox_KeyDown);
             // 
             // okButton
             // 

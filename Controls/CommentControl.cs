@@ -55,7 +55,7 @@ namespace Kitechan
                     }
                     else
                     {
-                        info.LoadImage(); // event firing too soon?
+                        info.LoadImage();
                     }
                 }
             }
@@ -77,14 +77,7 @@ namespace Kitechan
 
         private void SetMessage(string message)
         {
-            this.Height = this.MinimumSize.Height;
-            SizeF stringSize = this.messageLabel.CreateGraphics().MeasureString(message, this.messageLabel.Font, this.messageLabel.Width); // failing because width isn't set yet?
             this.messageLabel.Text = message;
-            if (stringSize.Height > this.messageLabel.Height)
-            {
-                int diff = (int)(stringSize.Height - this.messageLabel.Height);
-                this.Height = this.Height + diff;
-            }
         }
 
         public void UpdateImage(Image image)
@@ -125,6 +118,16 @@ namespace Kitechan
                 {
                     this.UnheartCommentEvent(this, new UnheartCommentEventArgs(this.CommentId));
                 }
+            }
+        }
+
+        private void CommentControl_Resize(object sender, EventArgs e)
+        {
+            using (Graphics g = this.messageLabel.CreateGraphics())
+            {
+                SizeF stringSize = g.MeasureString(this.messageLabel.Text, this.messageLabel.Font, this.messageLabel.Width);
+                int heightDelta = ((int)Math.Ceiling(stringSize.Height)) - this.messageLabel.Height;
+                this.Height = this.Height + heightDelta;
             }
         }
     }
