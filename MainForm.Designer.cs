@@ -85,10 +85,10 @@
             // loginLabel
             // 
             this.loginLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loginLabel.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loginLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginLabel.Location = new System.Drawing.Point(448, 5);
             this.loginLabel.Name = "loginLabel";
-            this.loginLabel.Size = new System.Drawing.Size(117, 13);
+            this.loginLabel.Size = new System.Drawing.Size(117, 14);
             this.loginLabel.TabIndex = 4;
             this.loginLabel.TabStop = true;
             this.loginLabel.Text = "Login";

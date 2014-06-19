@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -77,7 +78,40 @@ namespace Kitechan
 
         private void SetMessage(string message)
         {
+            this.messageLabel.Links.Clear();
             this.messageLabel.Text = message;
+            foreach (Tuple<int, int> link in this.GetHyperlinks(message))
+            {
+                this.messageLabel.Links.Add(link.Item1, link.Item2, message.Substring(link.Item1, link.Item2));
+            }
+        }
+
+        private IEnumerable<Tuple<int, int>> GetHyperlinks(string message)
+        {
+            foreach (Tuple<int, int> link in this.GetHyperlinks(message, "http"))
+            {
+                yield return link;
+            }
+        }
+
+        private IEnumerable<Tuple<int, int>> GetHyperlinks(string message, string prefix)
+        {
+            int index = 0;
+            string formattedPrefix = prefix + "://";
+            do
+            {
+                index = message.IndexOf(formattedPrefix, index, StringComparison.InvariantCultureIgnoreCase);
+                if (index != -1)
+                {
+                    int end = message.IndexOf(' ', index);
+                    if (end == -1)
+                    {
+                        end = message.Length;
+                    }
+                    yield return new Tuple<int, int>(index, end - index);
+                    index = end;
+                }
+            } while (index != -1);
         }
 
         public void UpdateImage(Image image)
@@ -118,6 +152,18 @@ namespace Kitechan
                 {
                     this.UnheartCommentEvent(this, new UnheartCommentEventArgs(this.CommentId));
                 }
+            }
+        }
+
+        private void messageLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                try
+                {
+                    Process.Start(e.Link.LinkData.ToString());
+                }
+                catch { }
             }
         }
 

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.messageLabel = new System.Windows.Forms.Label();
+            this.messageLabel = new System.Windows.Forms.LinkLabel();
             this.dateLabel = new System.Windows.Forms.Label();
             this.userIcon = new Kitechan.SmoothPictureBox();
             this.statusLabel = new System.Windows.Forms.Label();
@@ -55,11 +55,13 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.messageLabel.Font = new System.Drawing.Font("Segoe UI Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.messageLabel.LinkArea = new System.Windows.Forms.LinkArea(0, 0);
             this.messageLabel.Location = new System.Drawing.Point(62, 28);
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(186, 28);
             this.messageLabel.TabIndex = 1;
             this.messageLabel.Text = "[MESSAGE]";
+            this.messageLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.messageLabel_LinkClicked);
             // 
             // dateLabel
             // 
@@ -122,7 +124,7 @@
         #endregion
 
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Label messageLabel;
+        private System.Windows.Forms.LinkLabel messageLabel;
         private System.Windows.Forms.Label dateLabel;
         private SmoothPictureBox userIcon;
         private System.Windows.Forms.Label statusLabel;

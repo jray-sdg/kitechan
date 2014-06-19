@@ -39,6 +39,8 @@ namespace Kitechan
 
         private string MixlrSession { get; set; }
 
+        private List<int> MutedUsers { get; set; }
+
         private WebSocket WebSocket { get; set; }
 
         private string WebSocketUrl { get { return "ws://ws.pusherapp.com/app/2c4e9e540854144b54a9?protocol=5&client=js&version=1.12.7&flash=false"; } }
@@ -71,6 +73,7 @@ namespace Kitechan
             this.LoggedInUserId = 0;
             this.MixlrUserLogin = string.Empty;
             this.MixlrSession = string.Empty;
+            this.MutedUsers = new List<int>();
             this.LoadState();
             this.WebSocket = new WebSocket(this.WebSocketUrl);
             this.WebSocket.Opened += webSocket_Opened;
@@ -112,6 +115,10 @@ namespace Kitechan
                         {
                             this.MixlrSession = childNode.InnerText;
                         }
+                        else if (childNode.Name == "mutedUser")
+                        {
+                            this.MutedUsers.Add(int.Parse(childNode.InnerText));
+                        }
                         else if (childNode.Name == "userInfo")
                         {
                             foreach (XmlNode userNode in childNode.ChildNodes)
@@ -141,6 +148,11 @@ namespace Kitechan
                     writer.WriteElementString("loggedInUser", this.LoggedInUserId.ToString());
                     writer.WriteElementString("mixlrUserLogin", this.MixlrUserLogin);
                     writer.WriteElementString("mixlrSession", this.MixlrSession);
+                }
+
+                foreach (int mutedUser in this.MutedUsers)
+                {
+                    writer.WriteElementString("mutedUser", mutedUser.ToString());
                 }
 
                 writer.WriteStartElement("userInfo");
@@ -225,6 +237,27 @@ namespace Kitechan
             }
         }
 
+        public void MuteUser(int userId)
+        {
+            if (!this.MutedUsers.Contains(userId))
+            {
+                this.MutedUsers.Add(userId);
+            }
+        }
+
+        public void UnmuteUser(int userId)
+        {
+            if (this.MutedUsers.Contains(userId))
+            {
+                this.MutedUsers.Remove(userId);
+            }
+        }
+
+        public void ClearMutedUsers()
+        {
+            this.MutedUsers.Clear();
+        }
+
         private void userInfo_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)
         {
             this.ImageLoadedEvent(this, e);
@@ -258,7 +291,10 @@ namespace Kitechan
                         this.LoadUserInfo(comment.UserId);
                     }
                     this.GetUserInfo(comment.UserId).UpdateUser(comment.Name, comment.ImageUrl);
-                    this.NewMessageEvent(this, new NewMessageEventArgs(comment));
+                    if (!this.MutedUsers.Contains(comment.UserId))
+                    {
+                        this.NewMessageEvent(this, new NewMessageEventArgs(comment));
+                    }
                     break;
                 case "comment:hearted":
                     this.CommentHeartedEvent(this, new CommentHeartedEventArgs(int.Parse(socketEvent.Data.CommentId), socketEvent.Data.UserIds.Select(int.Parse)));

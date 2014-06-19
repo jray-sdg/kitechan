@@ -95,10 +95,7 @@ namespace Kitechan
 
         private void engine_CommentDeletedEvent(object sender, CommentDeletedEventArgs e)
         {
-            if (this.commentLookup.ContainsKey(e.CommentId))
-            {
-                this.commentLookup[e.CommentId].CommentDeleted();
-            }
+            this.DeleteComment(e.CommentId);
         }
 
         private void engine_CommentHeartedEvent(object sender, CommentHeartedEventArgs e)
@@ -239,6 +236,21 @@ namespace Kitechan
             }
         }
 
+        private void DeleteComment(int commentId)
+        {
+            if (this.commentLookup.ContainsKey(commentId))
+            {
+                if (this.commentLookup[commentId].InvokeRequired)
+                {
+                    this.commentLookup[commentId].Invoke((MethodInvoker)(() => this.DeleteComment(commentId)));
+                }
+                else
+                {
+                    this.commentLookup[commentId].CommentDeleted();
+                }
+            }
+        }
+
         private CommentControl GetCommentControl()
         {
             if (this.controlPool.Count < 5)
@@ -291,6 +303,8 @@ namespace Kitechan
                 if (e.KeyCode == Keys.A)
                 {
                     this.commentTextBox.SelectAll();
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
                 }
             }
         }
