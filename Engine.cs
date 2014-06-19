@@ -305,7 +305,7 @@ namespace Kitechan
                 case "action:created":
                     if (socketEvent.Data.Type.Equals("heart", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        this.StreamHeartedEvent(this, new StreamHeartedEventArgs(int.Parse(socketEvent.Data.UserId), int.Parse(socketEvent.Data.Total), int.Parse(socketEvent.Data.GrandTotal)));
+                        this.StreamHeartedEvent(this, new StreamHeartedEventArgs(int.Parse(socketEvent.Data.UserId), int.Parse(socketEvent.Data.Total), 0));//int.Parse(socketEvent.Data.GrandTotal)));
                     }
                     else
                     {

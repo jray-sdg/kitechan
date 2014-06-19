@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Kitechan.Properties;
 
 namespace Kitechan.Controls
 {
@@ -16,6 +17,13 @@ namespace Kitechan.Controls
         public LoginDialog(ValidateCredentialsDelegate credentials)
         {
             InitializeComponent();
+
+            this.Text = Resources.LoginTitle;
+            this.userLabel.Text = Resources.UserNamePrompt;
+            this.passwordLabel.Text = Resources.PasswordPrompt;
+            this.okButton.Text = Resources.LoginButton;
+            this.cancelButton.Text = Resources.CancelButton;
+
             this.validateCredentials = credentials;
         }
 
@@ -68,7 +76,7 @@ namespace Kitechan.Controls
             }
             else
             {
-                MessageBox.Show("Could not log in with the specified credentials", "Log in failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.LoginFailedMessage, Resources.LoginFailedTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Kitechan.Properties;
 using Kitechan.Types;
 
 namespace Kitechan
@@ -41,7 +42,7 @@ namespace Kitechan
             this.SetMessage(comment.Message);
             this.dateLabel.Text = comment.PostedTime.ToString();
             this.userIcon.Image = null;
-            this.statusLabel.Text = "0 hearts";
+            this.statusLabel.Text = string.Format(Resources.CommentHeartCount, 0);
             this.statusLabel.ForeColor = Color.Black;
             this.LockHearts = comment.Id == -1;
             this.toolTip.SetToolTip(this.statusLabel, string.Empty);
@@ -66,7 +67,7 @@ namespace Kitechan
         {
             this.CommentId = -1;
             this.UserId = -1;
-            this.nameLabel.Text = "SYSTEM";
+            this.nameLabel.Text = Resources.SystemUser;
             this.SetMessage(message);
             this.dateLabel.Text = DateTime.Now.ToString();
             this.userIcon.Image = null;
@@ -89,6 +90,10 @@ namespace Kitechan
         private IEnumerable<Tuple<int, int>> GetHyperlinks(string message)
         {
             foreach (Tuple<int, int> link in this.GetHyperlinks(message, "http"))
+            {
+                yield return link;
+            }
+            foreach (Tuple<int, int> link in this.GetHyperlinks(message, "https"))
             {
                 yield return link;
             }
@@ -130,13 +135,13 @@ namespace Kitechan
             {
                 heartingUsers = string.Join(", ", userIds.Select((x) => x.ToString()));
             }
-            this.statusLabel.Text = userIds.Count().ToString() + " hearts";
+            this.statusLabel.Text = string.Format(Resources.CommentHeartCount, userIds.Count());
             this.toolTip.SetToolTip(this.statusLabel, heartingUsers);
         }
 
         public void CommentDeleted()
         {
-            this.statusLabel.Text = "deleted";
+            this.statusLabel.Text = Resources.CommentDeleted;
             this.statusLabel.ForeColor = Color.DarkRed;
         }
 

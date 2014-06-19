@@ -91,7 +91,7 @@
             this.loginLabel.Size = new System.Drawing.Size(117, 14);
             this.loginLabel.TabIndex = 4;
             this.loginLabel.TabStop = true;
-            this.loginLabel.Text = "Login";
+            this.loginLabel.Text = "[LOGIN]";
             this.loginLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.loginLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.loginLabel_LinkClicked);
             // 
@@ -145,7 +145,7 @@
             this.postButton.Name = "postButton";
             this.postButton.Size = new System.Drawing.Size(75, 49);
             this.postButton.TabIndex = 3;
-            this.postButton.Text = "Post";
+            this.postButton.Text = "[POST]";
             this.postButton.UseVisualStyleBackColor = true;
             this.postButton.Click += new System.EventHandler(this.postButton_Click);
             // 

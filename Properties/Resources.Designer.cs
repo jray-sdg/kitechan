@@ -59,5 +59,149 @@ namespace Kitechan.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to deleted.
+        /// </summary>
+        internal static string CommentDeleted {
+            get {
+                return ResourceManager.GetString("CommentDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hearts.
+        /// </summary>
+        internal static string CommentHeartCount {
+            get {
+                return ResourceManager.GetString("CommentHeartCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged in as.
+        /// </summary>
+        internal static string LoggedInPrompt {
+            get {
+                return ResourceManager.GetString("LoggedInPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string LoginButton {
+            get {
+                return ResourceManager.GetString("LoginButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not log in with the specified credentials.
+        /// </summary>
+        internal static string LoginFailedMessage {
+            get {
+                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in failed.
+        /// </summary>
+        internal static string LoginFailedTitle {
+            get {
+                return ResourceManager.GetString("LoginFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        internal static string LoginPrompt {
+            get {
+                return ResourceManager.GetString("LoginPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login to Mixlr.
+        /// </summary>
+        internal static string LoginTitle {
+            get {
+                return ResourceManager.GetString("LoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kitechan.
+        /// </summary>
+        internal static string MainFormTitle {
+            get {
+                return ResourceManager.GetString("MainFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string PasswordPrompt {
+            get {
+                return ResourceManager.GetString("PasswordPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post.
+        /// </summary>
+        internal static string PostButton {
+            get {
+                return ResourceManager.GetString("PostButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jeff Gerstmann&apos;s Mixlr.
+        /// </summary>
+        internal static string StreamDefaultName {
+            get {
+                return ResourceManager.GetString("StreamDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ♥ {0}.
+        /// </summary>
+        internal static string StreamHeartCount {
+            get {
+                return ResourceManager.GetString("StreamHeartCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SYSTEM.
+        /// </summary>
+        internal static string SystemUser {
+            get {
+                return ResourceManager.GetString("SystemUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        internal static string UserNamePrompt {
+            get {
+                return ResourceManager.GetString("UserNamePrompt", resourceCulture);
+            }
+        }
     }
 }

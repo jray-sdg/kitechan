@@ -41,18 +41,18 @@
             this.userLabel.AutoSize = true;
             this.userLabel.Location = new System.Drawing.Point(12, 15);
             this.userLabel.Name = "userLabel";
-            this.userLabel.Size = new System.Drawing.Size(60, 13);
+            this.userLabel.Size = new System.Drawing.Size(77, 13);
             this.userLabel.TabIndex = 0;
-            this.userLabel.Text = "User Name";
+            this.userLabel.Text = "[USER NAME]";
             // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Location = new System.Drawing.Point(12, 41);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(53, 13);
+            this.passwordLabel.Size = new System.Drawing.Size(76, 13);
             this.passwordLabel.TabIndex = 1;
-            this.passwordLabel.Text = "Password";
+            this.passwordLabel.Text = "[PASSWORD]";
             // 
             // userTextBox
             // 
@@ -85,7 +85,7 @@
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 5;
-            this.okButton.Text = "Login";
+            this.okButton.Text = "[LOGIN]";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
@@ -96,7 +96,7 @@
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 6;
-            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Text = "[CANCEL]";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
@@ -116,7 +116,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginDialog";
-            this.Text = "Login to Mixlr";
+            this.Text = "[LOGIN TO MIXLR]";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,6 +1,4 @@
-﻿using Kitechan.Controls;
-using Kitechan.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Kitechan.Controls;
+using Kitechan.Properties;
+using Kitechan.Types;
 
 namespace Kitechan
 {
@@ -27,6 +28,9 @@ namespace Kitechan
         public MainForm()
         {
             InitializeComponent();
+
+            this.Text = Resources.MainFormTitle;
+            this.postButton.Text = Resources.PostButton;
 
             this.userLookup = new Dictionary<int, List<int>>();
             this.commentLookup = new Dictionary<int, CommentControl>();
@@ -50,19 +54,19 @@ namespace Kitechan
                 commentControl.UnheartCommentEvent += commentControl_UnheartCommentEvent;
                 this.controlPool.Enqueue(commentControl);
             }
-            this.streamNameLabel.Text = "Jeff Gerstmann's Mixlr";
-            this.streamHeartsLabel.Text = "♥ 0";
+            this.streamNameLabel.Text = Resources.StreamDefaultName;
+            this.streamHeartsLabel.Text = string.Format(Resources.StreamHeartCount, 0);
             this.engine.GetUserInfo(Engine.JeffUserId).LoadImage();
             if (this.engine.LoggedIn)
             {
                 UserInfo loggedInUser = this.engine.GetUserInfo(this.engine.LoggedInUserId);
                 loggedInUser.LoadImage();
-                this.loginLabel.Text = "Logged in as";
+                this.loginLabel.Text = Resources.LoggedInPrompt;
                 this.loggedInLabel.Text = loggedInUser.Name;
             }
             else
             {
-                this.loginLabel.Text = "Login";
+                this.loginLabel.Text = Resources.LoginPrompt;
                 this.loggedInLabel.Text = string.Empty;
             }
         }
@@ -105,7 +109,7 @@ namespace Kitechan
 
         private void engine_StreamHeartedEvent(object sender, StreamHeartedEventArgs e)
         {
-            this.UpdateStreamHearts(e.GrandTotal);
+            this.UpdateStreamHearts(e.Total);
         }
 
         private void engine_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)
@@ -159,15 +163,15 @@ namespace Kitechan
             }
         }
 
-        private void UpdateStreamHearts(int grandTotal)
+        private void UpdateStreamHearts(int total)
         {
             if (this.streamHeartsLabel.InvokeRequired)
             {
-                this.streamHeartsLabel.Invoke((MethodInvoker)(() => this.UpdateStreamHearts(grandTotal)));
+                this.streamHeartsLabel.Invoke((MethodInvoker)(() => this.UpdateStreamHearts(total)));
             }
             else
             {
-                this.streamHeartsLabel.Text = "♥ " + grandTotal;
+                this.streamHeartsLabel.Text = string.Format(Resources.StreamHeartCount, total);
             }
         }
 
@@ -315,7 +319,7 @@ namespace Kitechan
             this.loginDialog.Clear();
             if (loginResult == DialogResult.OK)
             {
-                this.loginLabel.Text = "Logged in as";
+                this.loginLabel.Text = Resources.LoggedInPrompt;
                 this.loggedInLabel.Text = this.engine.GetUserInfo(this.engine.LoggedInUserId).Name;
             }
         }
