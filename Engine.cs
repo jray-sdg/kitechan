@@ -168,6 +168,15 @@ namespace Kitechan
             }
         }
 
+        public void LoadStreamInfo()
+        {
+            UserJson jeffJson = WebWorker.GetUserJson(JeffUserId);
+            if (bool.Parse(jeffJson.IsLive))
+            {
+                this.BroadcastId = jeffJson.BroadcastIds != null && jeffJson.BroadcastIds.Count > 0 ? jeffJson.BroadcastIds[0] : string.Empty;
+            }
+        }
+
         public UserInfo GetUserInfo(int userId)
         {
             if (!this.userInfo.ContainsKey(userId))

@@ -56,6 +56,7 @@ namespace Kitechan
             }
             this.streamNameLabel.Text = Resources.StreamDefaultName;
             this.streamHeartsLabel.Text = string.Format(Resources.StreamHeartCount, 0);
+            this.engine.LoadStreamInfo();
             this.engine.GetUserInfo(Engine.JeffUserId).LoadImage();
             if (this.engine.LoggedIn)
             {

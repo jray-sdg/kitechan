@@ -250,11 +250,16 @@ namespace Kitechan.Types
 
         public static UserInfo GetUserInfo(int userId)
         {
+            UserJson json = GetUserJson(userId);
+            return new UserInfo(int.Parse(json.Id), json.UserName, json.ProfileImageUrl);
+        }
+
+        public static UserJson GetUserJson(int userId)
+        {
             using (WebClient client = new WebClient())
             {
                 string userInfo = client.DownloadString(string.Format(UserInfoUrl, userId));
-                UserJson json = UserJson.Parse(userInfo);
-                return new UserInfo(int.Parse(json.Id), json.UserName, json.ProfileImageUrl);
+                return UserJson.Parse(userInfo);
             }
         }
     }

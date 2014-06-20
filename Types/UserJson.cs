@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Kitechan
 {
-    class UserJson
+    public class UserJson
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
