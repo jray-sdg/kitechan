@@ -26,6 +26,9 @@ namespace Kitechan
         [JsonProperty(PropertyName = "broadcast_ids")]
         public List<string> BroadcastIds { get; set; }
 
+        [JsonProperty(PropertyName = "live_page_comments")]
+        public List<SocketData> PageComments { get; set; }
+
         public static UserJson Parse(string json)
         {
             return JsonConvert.DeserializeObject<UserJson>(json);

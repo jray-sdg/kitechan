@@ -21,6 +21,8 @@ namespace Kitechan.Types
 
         private static string UserInfoUrl { get { return "http://api.mixlr.com/users/{0}"; } }
 
+        private static string UserInfoUrlWithComments { get { return string.Format(UserInfoUrl, "{0}?include_comments=true"); } }
+
         public static void PostComment(string message, string mixlrUserLogin, string mixlrSession)
         {
             Task.Factory.StartNew(() => PerformPostComment(message, mixlrUserLogin, mixlrSession));
@@ -250,15 +252,15 @@ namespace Kitechan.Types
 
         public static UserInfo GetUserInfo(int userId)
         {
-            UserJson json = GetUserJson(userId);
+            UserJson json = GetUserJson(userId, false);
             return new UserInfo(int.Parse(json.Id), json.UserName, json.ProfileImageUrl);
         }
 
-        public static UserJson GetUserJson(int userId)
+        public static UserJson GetUserJson(int userId, bool includeComments)
         {
             using (WebClient client = new WebClient())
             {
-                string userInfo = client.DownloadString(string.Format(UserInfoUrl, userId));
+                string userInfo = client.DownloadString(string.Format(!includeComments ? UserInfoUrl : UserInfoUrlWithComments, userId));
                 return UserJson.Parse(userInfo);
             }
         }

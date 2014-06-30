@@ -57,6 +57,11 @@ namespace Kitechan
 
         private Dictionary<int, UserInfo> userInfo;
 
+#if LOGCHAT
+        private StreamWriter chatLog;
+        private DateTime lastLog;
+#endif
+
         public Engine()
         {
             if (!Directory.Exists(DataDir))
@@ -80,6 +85,12 @@ namespace Kitechan
             this.WebSocket.Closed += webSocket_Closed;
             this.WebSocket.Error += webSocket_Error;
             this.WebSocket.MessageReceived += webSocket_MessageReceived;
+
+#if LOGCHAT
+            this.chatLog = File.AppendText(string.Format(@"E:\mixlr\{0}", DateTime.Now.ToString("yyMMdd")));
+            this.chatLog.AutoFlush = true;
+            this.lastLog = DateTime.Now;
+#endif
         }
 
         public void Connect()
@@ -90,6 +101,10 @@ namespace Kitechan
         public void Disconnect()
         {
             this.WebSocket.Close();
+
+#if LOGCHAT
+            this.chatLog.Close();
+#endif
         }
 
         public void LoadState()
@@ -170,11 +185,20 @@ namespace Kitechan
 
         public void LoadStreamInfo()
         {
-            UserJson jeffJson = WebWorker.GetUserJson(JeffUserId);
+#if LOADHISTORY
+            UserJson jeffJson = WebWorker.GetUserJson(JeffUserId, true);
             if (bool.Parse(jeffJson.IsLive))
             {
                 this.BroadcastId = jeffJson.BroadcastIds != null && jeffJson.BroadcastIds.Count > 0 ? jeffJson.BroadcastIds[0] : string.Empty;
             }
+            if (jeffJson.PageComments != null && this.NewMessageEvent != null)
+            {
+                for (int x = Math.Min(25, jeffJson.PageComments.Count - 1); x >= 0; x--)
+                {
+                    this.NewMessageEvent(this, new NewMessageEventArgs(Comment.ParseData(jeffJson.PageComments[x])));
+                }
+            }
+#endif
         }
 
         public UserInfo GetUserInfo(int userId)
@@ -304,6 +328,17 @@ namespace Kitechan
                     {
                         this.NewMessageEvent(this, new NewMessageEventArgs(comment));
                     }
+
+#if LOGCHAT
+                    if (this.lastLog.DayOfYear != DateTime.Now.DayOfYear)
+                    {
+                        this.chatLog.Close();
+                        this.chatLog = File.AppendText(string.Format(@"E:\mixlr\{0}", DateTime.Now.ToString("yyMMdd")));
+                        this.chatLog.AutoFlush = true;
+                        this.lastLog = DateTime.Now;
+                    }
+                    this.chatLog.WriteLine(string.Format("{0} - {1} - {2}", comment.Name, comment.PostedTime.ToString("HH:mm:ss"), comment.Message));
+#endif
                     break;
                 case "comment:hearted":
                     this.CommentHeartedEvent(this, new CommentHeartedEventArgs(int.Parse(socketEvent.Data.CommentId), socketEvent.Data.UserIds.Select(int.Parse)));

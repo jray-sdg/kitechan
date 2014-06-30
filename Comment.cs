@@ -26,13 +26,18 @@ namespace Kitechan
 
         public static Comment ParseEvent(SocketEvent socketEvent)
         {
+            return ParseData(socketEvent.Data);
+        }
+
+        public static Comment ParseData(SocketData socketData)
+        {
             Comment ret = new Comment();
-            ret.Id = int.Parse(socketEvent.Data.Id);
-            ret.Name = socketEvent.Data.Name;
-            ret.Message = socketEvent.Data.Content;
-            ret.PostedTime = socketEvent.Data.CreatedAt;
-            ret.UserId = int.Parse(socketEvent.Data.UserId);
-            ret.ImageUrl = socketEvent.Data.ImageUrl;
+            ret.Id = int.Parse(socketData.Id);
+            ret.Name = socketData.Name;
+            ret.Message = socketData.Content;
+            ret.PostedTime = socketData.CreatedAt;
+            ret.UserId = int.Parse(socketData.UserId);
+            ret.ImageUrl = socketData.ImageUrl;
             return ret;
         }
 
