@@ -100,7 +100,10 @@ namespace Kitechan
 
         public void Disconnect()
         {
-            this.WebSocket.Close();
+            if (this.WebSocket.State == WebSocketState.Open)
+            {
+                this.WebSocket.Close();
+            }
 
 #if LOGCHAT
             this.chatLog.Close();

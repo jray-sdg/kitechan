@@ -35,7 +35,11 @@
             this.userIcon = new Kitechan.SmoothPictureBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showUserInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muteUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.userIcon)).BeginInit();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -76,6 +80,7 @@
             // 
             // userIcon
             // 
+            this.userIcon.ContextMenuStrip = this.contextMenuStrip;
             this.userIcon.Location = new System.Drawing.Point(6, 6);
             this.userIcon.MaximumSize = new System.Drawing.Size(50, 50);
             this.userIcon.MinimumSize = new System.Drawing.Size(50, 50);
@@ -102,6 +107,28 @@
             // 
             this.toolTip.ShowAlways = true;
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showUserInfoToolStripMenuItem,
+            this.muteUserToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(163, 48);
+            // 
+            // showUserInfoToolStripMenuItem
+            // 
+            this.showUserInfoToolStripMenuItem.Name = "showUserInfoToolStripMenuItem";
+            this.showUserInfoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.showUserInfoToolStripMenuItem.Text = "Show User Info...";
+            this.showUserInfoToolStripMenuItem.Click += new System.EventHandler(this.showUserInfoToolStripMenuItem_Click);
+            // 
+            // muteUserToolStripMenuItem
+            // 
+            this.muteUserToolStripMenuItem.Name = "muteUserToolStripMenuItem";
+            this.muteUserToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.muteUserToolStripMenuItem.Text = "Mute User";
+            this.muteUserToolStripMenuItem.Click += new System.EventHandler(this.muteUserToolStripMenuItem_Click);
+            // 
             // CommentControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -117,6 +144,7 @@
             this.Size = new System.Drawing.Size(380, 62);
             this.Resize += new System.EventHandler(this.CommentControl_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.userIcon)).EndInit();
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -129,5 +157,8 @@
         private SmoothPictureBox userIcon;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem showUserInfoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem muteUserToolStripMenuItem;
     }
 }

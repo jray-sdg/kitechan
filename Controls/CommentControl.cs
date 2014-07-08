@@ -18,6 +18,10 @@ namespace Kitechan
 
         public event EventHandler<UnheartCommentEventArgs> UnheartCommentEvent;
 
+        public event EventHandler<ShowUserInfoEventArgs> ShowUserInfoEvent;
+
+        public event EventHandler<MuteUserEventArgs> MuteUserEvent;
+
         private UserInfoDelegate getUserInfo;
 
         private bool LockHearts;
@@ -46,6 +50,7 @@ namespace Kitechan
             this.statusLabel.ForeColor = Color.Black;
             this.LockHearts = comment.Id == -1;
             this.toolTip.SetToolTip(this.statusLabel, string.Empty);
+            this.contextMenuStrip.Enabled = true;
             if (this.getUserInfo != null)
             {
                 UserInfo info = this.getUserInfo(comment.UserId);
@@ -75,6 +80,7 @@ namespace Kitechan
             this.statusLabel.ForeColor = Color.Black;
             this.LockHearts = true;
             this.toolTip.SetToolTip(this.statusLabel, string.Empty);
+            this.contextMenuStrip.Enabled = false;
         }
 
         private void SetMessage(string message)
@@ -179,6 +185,22 @@ namespace Kitechan
                 SizeF stringSize = g.MeasureString(this.messageLabel.Text, this.messageLabel.Font, this.messageLabel.Width);
                 int heightDelta = ((int)Math.Ceiling(stringSize.Height)) - this.messageLabel.Height;
                 this.Height = this.Height + heightDelta;
+            }
+        }
+
+        private void showUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.ShowUserInfoEvent != null)
+            {
+                this.ShowUserInfoEvent(this, new ShowUserInfoEventArgs(this.UserId));
+            }
+        }
+
+        private void muteUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.MuteUserEvent != null)
+            {
+                this.MuteUserEvent(this, new MuteUserEventArgs(this.UserId));
             }
         }
     }

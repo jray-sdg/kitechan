@@ -72,6 +72,18 @@
     <Compile Include="Controls\PasswordTextBox.Designer.cs">
       <DependentUpon>PasswordTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TextBoxWithoutCaret.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TextBoxWithoutCaret.Designer.cs">
+      <DependentUpon>TextBoxWithoutCaret.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInfoDialog.Designer.cs">
+      <DependentUpon>UserInfoDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Engine.cs" />
     <Compile Include="Types\EventArgs.cs" />
     <Compile Include="MainForm.cs">
@@ -104,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LoginDialog.resx">
       <DependentUpon>LoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserInfoDialog.resx">
+      <DependentUpon>UserInfoDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

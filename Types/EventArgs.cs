@@ -109,4 +109,24 @@ namespace Kitechan
             this.CommentId = c;
         }
     }
+
+    public class ShowUserInfoEventArgs : EventArgs
+    {
+        public int UserId { get; private set; }
+
+        public ShowUserInfoEventArgs(int u)
+        {
+            this.UserId = u;
+        }
+    }
+
+    public class MuteUserEventArgs : EventArgs
+    {
+        public int UserId { get; private set; }
+
+        public MuteUserEventArgs(int u)
+        {
+            this.UserId = u;
+        }
+    }
 }

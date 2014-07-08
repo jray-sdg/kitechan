@@ -19,6 +19,8 @@ namespace Kitechan
 
         private LoginDialog loginDialog;
 
+        private UserInfoDialog userInfoDialog;
+
         private Queue<CommentControl> controlPool;
 
         private Dictionary<int, List<int>> userLookup;
@@ -45,6 +47,7 @@ namespace Kitechan
             this.engine.StreamHeartedEvent += engine_StreamHeartedEvent;
 
             this.loginDialog = new LoginDialog(this.engine.ValidateCredentials);
+            this.userInfoDialog = new UserInfoDialog();
 
             this.controlPool = new Queue<CommentControl>(105);
             for (int x = 0; x < 105; x++)
@@ -52,6 +55,8 @@ namespace Kitechan
                 CommentControl commentControl = new CommentControl(this.engine.GetUserInfo);
                 commentControl.HeartCommentEvent += commentControl_HeartCommentEvent;
                 commentControl.UnheartCommentEvent += commentControl_UnheartCommentEvent;
+                commentControl.ShowUserInfoEvent += commentControl_ShowUserInfoEvent;
+                commentControl.MuteUserEvent += commentControl_MuteUserEvent;
                 this.controlPool.Enqueue(commentControl);
             }
             this.streamNameLabel.Text = Resources.StreamDefaultName;
@@ -126,6 +131,22 @@ namespace Kitechan
         private void commentControl_UnheartCommentEvent(object sender, UnheartCommentEventArgs e)
         {
             this.engine.UnheartComment(e.CommentId);
+        }
+
+        private void commentControl_ShowUserInfoEvent(object sender, ShowUserInfoEventArgs e)
+        {
+            if (this.userInfoDialog.IsDisposed)
+            {
+                this.userInfoDialog = new UserInfoDialog();
+            }
+            UserInfo userInfo = this.engine.GetUserInfo(e.UserId);
+            this.userInfoDialog.SetUserInfo(userInfo);
+            this.userInfoDialog.Show();
+        }
+
+        private void commentControl_MuteUserEvent(object sender, MuteUserEventArgs e)
+        {
+            this.engine.MuteUser(e.UserId);
         }
 
         private void streamHeartsLabel_MouseClick(object sender, MouseEventArgs e)

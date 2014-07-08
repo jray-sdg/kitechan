@@ -196,6 +196,15 @@ namespace Kitechan.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Known Aliases.
+        /// </summary>
+        internal static string UserInfoAliasLabel {
+            get {
+                return ResourceManager.GetString("UserInfoAliasLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         internal static string UserNamePrompt {
