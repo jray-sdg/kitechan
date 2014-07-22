@@ -90,6 +90,16 @@ namespace Kitechan
         }
     }
 
+    public class DeleteCommentEventArgs : EventArgs
+    {
+        public int CommentId { get; private set; }
+
+        public DeleteCommentEventArgs(int c)
+        {
+            this.CommentId = c;
+        }
+    }
+
     public class HeartCommentEventArgs : EventArgs
     {
         public int CommentId { get; private set; }

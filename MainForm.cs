@@ -55,6 +55,7 @@ namespace Kitechan
                 CommentControl commentControl = new CommentControl(this.engine.GetUserInfo);
                 commentControl.HeartCommentEvent += commentControl_HeartCommentEvent;
                 commentControl.UnheartCommentEvent += commentControl_UnheartCommentEvent;
+                commentControl.DeleteCommentEvent += commentControl_DeleteCommentEvent;
                 commentControl.ShowUserInfoEvent += commentControl_ShowUserInfoEvent;
                 commentControl.MuteUserEvent += commentControl_MuteUserEvent;
                 this.controlPool.Enqueue(commentControl);
@@ -131,6 +132,11 @@ namespace Kitechan
         private void commentControl_UnheartCommentEvent(object sender, UnheartCommentEventArgs e)
         {
             this.engine.UnheartComment(e.CommentId);
+        }
+
+        private void commentControl_DeleteCommentEvent(object sender, DeleteCommentEventArgs e)
+        {
+            this.engine.DeleteComment(e.CommentId);
         }
 
         private void commentControl_ShowUserInfoEvent(object sender, ShowUserInfoEventArgs e)

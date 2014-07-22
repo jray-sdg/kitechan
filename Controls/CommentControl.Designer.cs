@@ -33,11 +33,12 @@
             this.messageLabel = new System.Windows.Forms.LinkLabel();
             this.dateLabel = new System.Windows.Forms.Label();
             this.userIcon = new Kitechan.SmoothPictureBox();
-            this.statusLabel = new System.Windows.Forms.Label();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showUserInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.muteUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.deleteCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.userIcon)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +91,29 @@
             this.userIcon.TabIndex = 3;
             this.userIcon.TabStop = false;
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showUserInfoToolStripMenuItem,
+            this.muteUserToolStripMenuItem,
+            this.deleteCommentToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(165, 92);
+            // 
+            // showUserInfoToolStripMenuItem
+            // 
+            this.showUserInfoToolStripMenuItem.Name = "showUserInfoToolStripMenuItem";
+            this.showUserInfoToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.showUserInfoToolStripMenuItem.Text = "Show User Info...";
+            this.showUserInfoToolStripMenuItem.Click += new System.EventHandler(this.showUserInfoToolStripMenuItem_Click);
+            // 
+            // muteUserToolStripMenuItem
+            // 
+            this.muteUserToolStripMenuItem.Name = "muteUserToolStripMenuItem";
+            this.muteUserToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.muteUserToolStripMenuItem.Text = "Mute User";
+            this.muteUserToolStripMenuItem.Click += new System.EventHandler(this.muteUserToolStripMenuItem_Click);
+            // 
             // statusLabel
             // 
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -107,27 +131,12 @@
             // 
             this.toolTip.ShowAlways = true;
             // 
-            // contextMenuStrip
+            // deleteCommentToolStripMenuItem
             // 
-            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showUserInfoToolStripMenuItem,
-            this.muteUserToolStripMenuItem});
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(163, 48);
-            // 
-            // showUserInfoToolStripMenuItem
-            // 
-            this.showUserInfoToolStripMenuItem.Name = "showUserInfoToolStripMenuItem";
-            this.showUserInfoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.showUserInfoToolStripMenuItem.Text = "Show User Info...";
-            this.showUserInfoToolStripMenuItem.Click += new System.EventHandler(this.showUserInfoToolStripMenuItem_Click);
-            // 
-            // muteUserToolStripMenuItem
-            // 
-            this.muteUserToolStripMenuItem.Name = "muteUserToolStripMenuItem";
-            this.muteUserToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.muteUserToolStripMenuItem.Text = "Mute User";
-            this.muteUserToolStripMenuItem.Click += new System.EventHandler(this.muteUserToolStripMenuItem_Click);
+            this.deleteCommentToolStripMenuItem.Name = "deleteCommentToolStripMenuItem";
+            this.deleteCommentToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.deleteCommentToolStripMenuItem.Text = "Delete Comment";
+            this.deleteCommentToolStripMenuItem.Click += new System.EventHandler(this.deleteCommentToolStripMenuItem_Click);
             // 
             // CommentControl
             // 
@@ -160,5 +169,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem showUserInfoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem muteUserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteCommentToolStripMenuItem;
     }
 }

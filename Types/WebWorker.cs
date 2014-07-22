@@ -13,6 +13,8 @@ namespace Kitechan.Types
     {
         private static string PostCommentUrl { get { return "http://mixlr.com/comments"; } }
 
+        private static string DeleteCommentUrl { get { return "http://mixlr.com/comments/{0}"; } }
+
         private static string CommentHeartUrl { get { return "http://mixlr.com/comments/{0}/heart"; } }
 
         private static string StreamHeartUrl { get { return "http://mixlr.com/broadcast_actions"; } }
@@ -40,7 +42,7 @@ namespace Kitechan.Types
             cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
             cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
             request.CookieContainer = cookies;
-            byte[] messageBytes = Encoding.UTF8.GetBytes(message.Replace(' ', '+'));
+            byte[] messageBytes = Encoding.UTF8.GetBytes(EncodeCommentString(message));
             List<byte> body = new List<byte>();
             body.AddRange(Encoding.UTF8.GetBytes("comment%5Bcontent%5D="));
             body.AddRange(messageBytes);
@@ -52,6 +54,40 @@ namespace Kitechan.Types
                 bodyStream.Write(body.ToArray(), 0, body.Count);
                 bodyStream.Close();
                 response = (HttpWebResponse)request.GetResponse();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+        }
+
+        public static void DeleteComment(int commentId, string mixlrUserLogin, string mixlrSession)
+        {
+            Task.Factory.StartNew(() => PerformDeleteComment(commentId, mixlrUserLogin, mixlrSession));
+        }
+
+        private static void PerformDeleteComment(int commentId, string mixlrUserLogin, string mixlrSession)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(string.Format(DeleteCommentUrl, commentId));
+            request.Method = "DELETE";
+            request.UserAgent = "Kitechan";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Accept = "text/plain";
+            request.Headers.Add("X-Requested_With", "XMLHttpRequest");
+            CookieContainer cookies = new CookieContainer();
+            cookies.Add(new Cookie("mixlr_user_login", mixlrUserLogin, "/", "mixlr.com"));
+            cookies.Add(new Cookie("mixlr_session", mixlrSession, "/", "mixlr.com"));
+            request.CookieContainer = cookies;
+            WebResponse response = null;
+            try
+            {
+                response = request.GetResponse();
             }
             catch
             {
@@ -263,6 +299,78 @@ namespace Kitechan.Types
                 string userInfo = client.DownloadString(string.Format(!includeComments ? UserInfoUrl : UserInfoUrlWithComments, userId));
                 return UserJson.Parse(userInfo);
             }
+        }
+
+        private static string EncodeCommentString(string input)
+        {
+            StringBuilder output = new StringBuilder();
+            foreach (char c in input)
+            {
+                switch (c)
+                {
+                    case ' ':
+                        output.Append('+');
+                        break;
+                    case '!':
+                        output.Append("%21");
+                        break;
+                    case '#':
+                        output.Append("%23");
+                        break;
+                    case '$':
+                        output.Append("%24");
+                        break;
+                    case '&':
+                        output.Append("%26");
+                        break;
+                    case '\'':
+                        output.Append("%27");
+                        break;
+                    case '(':
+                        output.Append("%28");
+                        break;
+                    case ')':
+                        output.Append("%29");
+                        break;
+                    case '*':
+                        output.Append("%2A");
+                        break;
+                    case '+':
+                        output.Append("%2B");
+                        break;
+                    case ',':
+                        output.Append("%2C");
+                        break;
+                    case '/':
+                        output.Append("%2F");
+                        break;
+                    case ':':
+                        output.Append("%3A");
+                        break;
+                    case ';':
+                        output.Append("%3B");
+                        break;
+                    case '=':
+                        output.Append("%3D");
+                        break;
+                    case '?':
+                        output.Append("%3F");
+                        break;
+                    case '@':
+                        output.Append("%40");
+                        break;
+                    case '[':
+                        output.Append("%5B");
+                        break;
+                    case ']':
+                        output.Append("%5D");
+                        break;
+                    default:
+                        output.Append(c);
+                        break;
+                }
+            }
+            return output.ToString();
         }
     }
 }

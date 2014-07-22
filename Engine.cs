@@ -188,7 +188,7 @@ namespace Kitechan
 
         public void LoadStreamInfo()
         {
-#if LOADHISTORY
+//#if LOADHISTORY
             UserJson jeffJson = WebWorker.GetUserJson(JeffUserId, true);
             if (bool.Parse(jeffJson.IsLive))
             {
@@ -201,7 +201,7 @@ namespace Kitechan
                     this.NewMessageEvent(this, new NewMessageEventArgs(Comment.ParseData(jeffJson.PageComments[x])));
                 }
             }
-#endif
+//#endif
         }
 
         public UserInfo GetUserInfo(int userId)
@@ -246,6 +246,14 @@ namespace Kitechan
             if (this.LoggedIn)
             {
                 WebWorker.PostComment(message, this.MixlrUserLogin, this.MixlrSession);
+            }
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            if (this.LoggedIn)
+            {
+                WebWorker.DeleteComment(commentId, this.MixlrUserLogin, this.MixlrSession);
             }
         }
 

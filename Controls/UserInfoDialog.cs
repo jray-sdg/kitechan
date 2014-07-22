@@ -33,6 +33,7 @@ namespace Kitechan.Controls
                 if (userInfo.Aliases != null && userInfo.Aliases.Count > 0)
                 {
                     this.aliasTextBox.Text = string.Join(Environment.NewLine, userInfo.Aliases);
+                    this.aliasTextBox.Select(0, 0);
                 }
                 if (userInfo.UserImage != null)
                 {

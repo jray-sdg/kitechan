@@ -18,6 +18,8 @@ namespace Kitechan
 
         public event EventHandler<UnheartCommentEventArgs> UnheartCommentEvent;
 
+        public event EventHandler<DeleteCommentEventArgs> DeleteCommentEvent;
+
         public event EventHandler<ShowUserInfoEventArgs> ShowUserInfoEvent;
 
         public event EventHandler<MuteUserEventArgs> MuteUserEvent;
@@ -201,6 +203,14 @@ namespace Kitechan
             if (this.MuteUserEvent != null)
             {
                 this.MuteUserEvent(this, new MuteUserEventArgs(this.UserId));
+            }
+        }
+
+        private void deleteCommentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.DeleteCommentEvent != null)
+            {
+                this.DeleteCommentEvent(this, new DeleteCommentEventArgs(this.CommentId));
             }
         }
     }
