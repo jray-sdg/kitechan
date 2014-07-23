@@ -72,6 +72,12 @@
     <Compile Include="Controls\PasswordTextBox.Designer.cs">
       <DependentUpon>PasswordTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\SettingsDialog.Designer.cs">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextBoxWithoutCaret.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,6 +113,7 @@
       <DependentUpon>SmoothPictureBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Types\LogonResult.cs" />
+    <Compile Include="Types\ClientSettings.cs" />
     <Compile Include="Types\SocketEvent.cs" />
     <Compile Include="Types\WebWorker.cs" />
     <Compile Include="UserInfo.cs" />
@@ -116,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LoginDialog.resx">
       <DependentUpon>LoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SettingsDialog.resx">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInfoDialog.resx">
       <DependentUpon>UserInfoDialog.cs</DependentUpon>

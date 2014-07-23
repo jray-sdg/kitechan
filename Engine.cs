@@ -39,7 +39,7 @@ namespace Kitechan
 
         private string MixlrSession { get; set; }
 
-        private List<int> MutedUsers { get; set; }
+        public ClientSettings Settings { get; set; }
 
         private WebSocket WebSocket { get; set; }
 
@@ -47,7 +47,7 @@ namespace Kitechan
 
         public static int JeffUserId { get { return 27902; } }
 
-        private string SubscribeEvent { get { return @"{""event"":""pusher:subscribe"",""data"":{""channel"":""production;user;27902""}}"; } }
+        private string SubscribeEvent { get { return string.Format(@"{{""event"":""pusher:subscribe"",""data"":{{""channel"":""production;user;{0}""}}}}", JeffUserId); } }
 
         public static string DataDir { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Kitechan"); } }
 
@@ -78,7 +78,7 @@ namespace Kitechan
             this.LoggedInUserId = 0;
             this.MixlrUserLogin = string.Empty;
             this.MixlrSession = string.Empty;
-            this.MutedUsers = new List<int>();
+            this.Settings = new ClientSettings();
             this.LoadState();
             this.WebSocket = new WebSocket(this.WebSocketUrl);
             this.WebSocket.Opened += webSocket_Opened;
@@ -133,9 +133,9 @@ namespace Kitechan
                         {
                             this.MixlrSession = childNode.InnerText;
                         }
-                        else if (childNode.Name == "mutedUser")
+                        else if (childNode.Name == "clientSettings")
                         {
-                            this.MutedUsers.Add(int.Parse(childNode.InnerText));
+                            this.Settings = ClientSettings.FromXml(childNode);
                         }
                         else if (childNode.Name == "userInfo")
                         {
@@ -168,10 +168,7 @@ namespace Kitechan
                     writer.WriteElementString("mixlrSession", this.MixlrSession);
                 }
 
-                foreach (int mutedUser in this.MutedUsers)
-                {
-                    writer.WriteElementString("mutedUser", mutedUser.ToString());
-                }
+                this.Settings.WriteXml(writer);
 
                 writer.WriteStartElement("userInfo");
 
@@ -283,23 +280,23 @@ namespace Kitechan
 
         public void MuteUser(int userId)
         {
-            if (!this.MutedUsers.Contains(userId))
+            if (!this.Settings.MutedUsers.Contains(userId))
             {
-                this.MutedUsers.Add(userId);
+                this.Settings.MutedUsers.Add(userId);
             }
         }
 
         public void UnmuteUser(int userId)
         {
-            if (this.MutedUsers.Contains(userId))
+            if (this.Settings.MutedUsers.Contains(userId))
             {
-                this.MutedUsers.Remove(userId);
+                this.Settings.MutedUsers.Remove(userId);
             }
         }
 
         public void ClearMutedUsers()
         {
-            this.MutedUsers.Clear();
+            this.Settings.MutedUsers.Clear();
         }
 
         private void userInfo_ImageLoadedEvent(object sender, ImageLoadedEventArgs e)
@@ -335,7 +332,7 @@ namespace Kitechan
                         this.LoadUserInfo(comment.UserId);
                     }
                     this.GetUserInfo(comment.UserId).UpdateUser(comment.Name, comment.ImageUrl);
-                    if (!this.MutedUsers.Contains(comment.UserId))
+                    if (!this.Settings.MutedUsers.Contains(comment.UserId))
                     {
                         this.NewMessageEvent(this, new NewMessageEventArgs(comment));
                     }

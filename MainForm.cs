@@ -21,6 +21,8 @@ namespace Kitechan
 
         private UserInfoDialog userInfoDialog;
 
+        private SettingsDialog settingsDialog;
+
         private Queue<CommentControl> controlPool;
 
         private Dictionary<int, List<int>> userLookup;
@@ -48,6 +50,7 @@ namespace Kitechan
 
             this.loginDialog = new LoginDialog(this.engine.ValidateCredentials);
             this.userInfoDialog = new UserInfoDialog();
+            this.settingsDialog = new SettingsDialog();
 
             this.controlPool = new Queue<CommentControl>(105);
             for (int x = 0; x < 105; x++)
@@ -349,6 +352,15 @@ namespace Kitechan
             {
                 this.loginLabel.Text = Resources.LoggedInPrompt;
                 this.loggedInLabel.Text = this.engine.GetUserInfo(this.engine.LoggedInUserId).Name;
+            }
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            this.settingsDialog.Settings = this.engine.Settings;
+            if (this.settingsDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.engine.Settings = this.settingsDialog.Settings;
             }
         }
     }
