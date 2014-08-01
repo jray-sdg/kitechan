@@ -10,14 +10,18 @@ namespace Kitechan.Types
     {
         public List<int> MutedUsers { get; set; }
 
+        public bool LoadChatHistory { get; set; }
+
         public ClientSettings()
         {
             this.MutedUsers = new List<int>();
+            this.LoadChatHistory = true;
         }
 
         public ClientSettings(ClientSettings other)
         {
             this.MutedUsers = new List<int>(other.MutedUsers);
+            this.LoadChatHistory = other.LoadChatHistory;
         }
 
         public ClientSettings Clone()
@@ -38,6 +42,9 @@ namespace Kitechan.Types
                         case "mutedUser":
                             ret.MutedUsers.Add(int.Parse(childNode.InnerText));
                             break;
+                        case "loadHistory":
+                            ret.LoadChatHistory = bool.Parse(childNode.InnerText);
+                            break;
                     }
                 }
             }
@@ -53,6 +60,8 @@ namespace Kitechan.Types
             {
                 xmlWriter.WriteElementString("mutedUser", mutedUser.ToString());
             }
+
+            xmlWriter.WriteElementString("loadHistory", this.LoadChatHistory.ToString());
 
             xmlWriter.WriteEndElement(); // clientSettings
         }

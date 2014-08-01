@@ -185,20 +185,21 @@ namespace Kitechan
 
         public void LoadStreamInfo()
         {
-//#if LOADHISTORY
-            UserJson jeffJson = WebWorker.GetUserJson(JeffUserId, true);
-            if (bool.Parse(jeffJson.IsLive))
+            if (this.Settings.LoadChatHistory)
             {
-                this.BroadcastId = jeffJson.BroadcastIds != null && jeffJson.BroadcastIds.Count > 0 ? jeffJson.BroadcastIds[0] : string.Empty;
-            }
-            if (jeffJson.PageComments != null && this.NewMessageEvent != null)
-            {
-                for (int x = Math.Min(25, jeffJson.PageComments.Count - 1); x >= 0; x--)
+                UserJson jeffJson = WebWorker.GetUserJson(JeffUserId, true);
+                if (bool.Parse(jeffJson.IsLive))
                 {
-                    this.NewMessageEvent(this, new NewMessageEventArgs(Comment.ParseData(jeffJson.PageComments[x])));
+                    this.BroadcastId = jeffJson.BroadcastIds != null && jeffJson.BroadcastIds.Count > 0 ? jeffJson.BroadcastIds[0] : string.Empty;
+                }
+                if (jeffJson.PageComments != null && this.NewMessageEvent != null)
+                {
+                    for (int x = Math.Min(25, jeffJson.PageComments.Count - 1); x >= 0; x--)
+                    {
+                        this.NewMessageEvent(this, new NewMessageEventArgs(Comment.ParseData(jeffJson.PageComments[x])));
+                    }
                 }
             }
-//#endif
         }
 
         public UserInfo GetUserInfo(int userId)

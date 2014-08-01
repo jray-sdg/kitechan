@@ -50,7 +50,7 @@ namespace Kitechan
 
             this.loginDialog = new LoginDialog(this.engine.ValidateCredentials);
             this.userInfoDialog = new UserInfoDialog();
-            this.settingsDialog = new SettingsDialog();
+            this.settingsDialog = new SettingsDialog(this.engine.GetUserInfo);
 
             this.controlPool = new Queue<CommentControl>(105);
             for (int x = 0; x < 105; x++)

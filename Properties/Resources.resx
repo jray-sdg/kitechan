@@ -172,4 +172,19 @@
   <data name="UserNamePrompt" xml:space="preserve">
     <value>User Name</value>
   </data>
+  <data name="LoadPastMessagesCheckbox" xml:space="preserve">
+    <value>Load chat history on launch</value>
+  </data>
+  <data name="MutedUsersPrompt" xml:space="preserve">
+    <value>Muted users</value>
+  </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="RemoveAllButton" xml:space="preserve">
+    <value>Remove All</value>
+  </data>
+  <data name="RemoveButton" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

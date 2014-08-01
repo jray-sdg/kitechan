@@ -64,6 +64,7 @@
             // 
             // settingsButton
             // 
+            this.settingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsButton.Image = global::Kitechan.Properties.Resources.gear;
             this.settingsButton.Location = new System.Drawing.Point(587, 3);
             this.settingsButton.Name = "settingsButton";

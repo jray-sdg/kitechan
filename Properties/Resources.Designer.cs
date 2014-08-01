@@ -98,6 +98,15 @@ namespace Kitechan.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load chat history on launch.
+        /// </summary>
+        internal static string LoadPastMessagesCheckbox {
+            get {
+                return ResourceManager.GetString("LoadPastMessagesCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logged in as.
         /// </summary>
         internal static string LoggedInPrompt {
@@ -161,6 +170,24 @@ namespace Kitechan.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Muted users.
+        /// </summary>
+        internal static string MutedUsersPrompt {
+            get {
+                return ResourceManager.GetString("MutedUsersPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string OkButton {
+            get {
+                return ResourceManager.GetString("OkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string PasswordPrompt {
@@ -175,6 +202,24 @@ namespace Kitechan.Properties {
         internal static string PostButton {
             get {
                 return ResourceManager.GetString("PostButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove All.
+        /// </summary>
+        internal static string RemoveAllButton {
+            get {
+                return ResourceManager.GetString("RemoveAllButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string RemoveButton {
+            get {
+                return ResourceManager.GetString("RemoveButton", resourceCulture);
             }
         }
         
